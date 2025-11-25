@@ -77,87 +77,110 @@
         },
         "change_details": {
             "description": "Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units).",
+            "discriminator": {
+                "propertyName": "kind",
+                "mapping": {
+                    "rows": "#/properties/change_details/oneOf/0",
+                    "unit": "#/properties/change_details/oneOf/1"
+                }
+            },
             "oneOf": [
                 {
-                    "rows_affected": {
-                        "description": "Number of rows affected if the process changed multiple rows (units).",
-                        "type": "integer"
-                    }
-                },
-                {
-                    "unit_id": {
-                        "description": "One or more unit-identifier variables and values (primary key) if ​​one row (unit) was affected, eg. 'fnr'='311280nnnnn' and 'orgnr'='123456789'.",
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "unit_id_variable": {
-                                    "description": "The unit-id variable name, e.g. 'fnr', 'pers_id', 'reg_nr' or 'komm_nr'.",
-                                    "type": "string"
-                                },
-                                "unit_id_value": {
-                                    "description": "The unit-id value, e.g. '311280nnnnn' or '123456789'.",
-                                    "type": "string"
-                                }
-                            }
+                    "type": "object",
+                    "properties": {
+                        "kind": {
+                            "description": "Discriminator for change_details variant",
+                            "const": "rows"
+                        },
+                        "rows_affected": {
+                            "description": "Number of rows affected if the process changed multiple rows (units).",
+                            "type": "integer"
                         }
                     },
-                    "old_value": {
-                        "description": "Old value(s)",
-                        "oneOf": [
-                            {
-                                "description": "Previous value if value updated (data_change_type = UPD).",
-                                "type": "string"
-                            },
-                            {
-                                "description": "If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "variable_name": {
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "string"
-                                        }
+                    "required": ["kind", "rows_affected"],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "kind": {
+                            "description": "Discriminator for change_details variant",
+                            "const": "unit"
+                        },
+                        "unit_id": {
+                            "description": "One or more unit-identifier variables and values (primary key) if ​​one row (unit) was affected, eg. 'fnr'='311280nnnnn' and 'orgnr'='123456789'.",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "unit_id_variable": {
+                                        "description": "The unit-id variable name, e.g. 'fnr', 'pers_id', 'reg_nr' or 'komm_nr'.",
+                                        "type": "string"
+                                    },
+                                    "unit_id_value": {
+                                        "description": "The unit-id value, e.g. '311280nnnnn' or '123456789'.",
+                                        "type": "string"
                                     }
-                                }
-                            },
-                            {
-                                "description": "If deleting a complex object (eg. a json document).",
-                                "type": "object"
+                                },
+                                "required": ["unit_id_variable", "unit_id_value"],
+                                "additionalProperties": false
                             }
-                        ]
+                        },
+                        "old_value": {
+                            "description": "Old value(s)",
+                            "oneOf": [
+                                {
+                                    "description": "Previous value if value updated (data_change_type = UPD).",
+                                    "type": "string"
+                                },
+                                {
+                                    "description": "If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "variable_name": {"type": "string"},
+                                            "value": {"type": "string"}
+                                        },
+                                        "required": ["variable_name", "value"],
+                                        "additionalProperties": false
+                                    }
+                                },
+                                {
+                                    "description": "If deleting a complex object (eg. a json document).",
+                                    "type": "object"
+                                }
+                            ]
+                        },
+                        "new_value": {
+                            "description": "New value(s)",
+                            "oneOf": [
+                                {
+                                    "description": "The new value if value updated (data_change_type = UPD).",
+                                    "type": "string"
+                                },
+                                {
+                                    "description": "If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "variable_name": {"type": "string"},
+                                            "value": {"type": "string"}
+                                        },
+                                        "required": ["variable_name", "value"],
+                                        "additionalProperties": false
+                                    }
+                                },
+                                {
+                                    "description": "If inserting a new complex object (eg. a json document).",
+                                    "type": "object"
+                                }
+                            ]
+                        }
                     },
-                    "new_value": {
-                        "description": "New value(s)",
-                        "oneOf": [
-                            {
-                                "description": "The new value if value updated (data_change_type = UPD).",
-                                "type": "string"
-                            },
-                            {
-                                "description": "If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
-                                "type": "array",
-                                "items": {
-                                    "type": "object",
-                                    "properties": {
-                                        "variable_name": {
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            },
-                            {
-                                "description": "If inserting a new complex object (eg. a json document).",
-                                "type": "object"
-                            }
-                        ]
-                    }
+                    "required": ["kind", "unit_id"],
+                    "additionalProperties": false
                 }
             ]
         }

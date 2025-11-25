@@ -13,14 +13,15 @@
     "data_change_type": "DEL",
     "change_comment": "Data slettet automatisk av dublettkontroll.",
     "change_details": {
+        "kind": "unit",
         "unit_id": [
-            {"fnr": "170598nnnnn"}
+            {"unit_id_variable": "fnr", "unit_id_value": "170598nnnnn"}
         ],
         "old_value": [
-            {"bostedskommune": "0301"},
-            {"type_loenn": "fast"},
-            {"loenn": "45000"},
-            {"overtid_loenn": "0"}
+            {"variable_name": "bostedskommune", "value": "0301"},
+            {"variable_name": "type_loenn", "value": "fast"},
+            {"variable_name": "loenn", "value": "45000"},
+            {"variable_name": "overtid_loenn", "value": "0"}
         ],
         "new_value": null
     }
