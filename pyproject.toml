@@ -20,7 +20,7 @@ documentation = "https://statisticsnorway.github.io/ssb-poc-statlog-model"
 Changelog = "https://github.com/statisticsnorway/ssb-poc-statlog-model/releases"
 
 [project.scripts]
-ssb-poc-statlog-model = "ssb_poc_statlog_model.__main__:main"
+generate-ssb-models = "ssb_poc_statlog_model.generate_python:main"
 
 [dependency-groups]
 lint = [
@@ -117,6 +117,8 @@ ignore = [
     "ANN202", # Don't require return type annotation for private functions.
     "ANN401", # Allow type annotation with type Any.
     "D100",   # Supress undocumented-public-module. Only doc of public api required.
+    "D101",   # Supress undocumented-public-class for generated code.
+    "E741",   # Supress ambiguous variable name for generated code.
     "FBT001", # Allow boolean positional arguments in a function.
     "FBT002", # Allow boolean default positional arguments in a function.
     "E402",   # Supress module-import-not-at-top-of-file, needed in jupyter notebooks.
@@ -125,7 +127,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-force-single-line = true
+force-single-line = false
 
 [tool.ruff.lint.mccabe]
 max-complexity = 15

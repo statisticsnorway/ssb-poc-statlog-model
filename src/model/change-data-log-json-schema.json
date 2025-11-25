@@ -1,7 +1,7 @@
 {
     "$id": "https://example.com/process-data.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "Json schema for Dapla data change log (process data)",
+    "title": "Change data log",
     "description": "Data model for data change log in a statistical production process",
     "type": "object",
     "properties": {
@@ -108,7 +108,7 @@
                             "const": "unit"
                         },
                         "unit_id": {
-                            "description": "One or more unit-identifier variables and values (primary key) if ​​one row (unit) was affected, eg. 'fnr'='311280nnnnn' and 'orgnr'='123456789'.",
+                            "description": "One or more unit-identifier variables and values (primary key) if one row (unit) was affected, eg. 'fnr'='311280nnnnn' and 'orgnr'='123456789'.",
                             "type": "array",
                             "items": {
                                 "type": "object",
