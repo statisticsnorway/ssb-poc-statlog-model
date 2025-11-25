@@ -1,0 +1,33 @@
+{
+  "template": "https://github.com/statisticsnorway/ssb-pypitemplate.git",
+  "commit": "4e7bb50723c61d5721ade3c5eb6ad7351ade6787",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "ssb-poc-statlog-model",
+      "package_name": "ssb_poc_statlog_model",
+      "friendly_name": "SSB POC Statlog Model",
+      "copyright_owner": "Statistics Norway",
+      "copyright_year": "2025",
+      "author": "Arne Sørli",
+      "email": "arne.sorli@ssb.no",
+      "github_organization": "statisticsnorway",
+      "version": "0.0.0",
+      "license": "MIT",
+      "development_status": "Development Status :: 4 - Beta",
+      "code_quality_level": "Medium",
+      "dependency_manager_tool": "poetry",
+      "department_number": "703",
+      "_copy_without_render": [
+        "*.rst_t"
+      ],
+      "_jinja2_env_vars": {
+        "lstrip_blocks": true,
+        "trim_blocks": true
+      },
+      "_template": "https://github.com/statisticsnorway/ssb-pypitemplate.git",
+      "_commit": "4e7bb50723c61d5721ade3c5eb6ad7351ade6787"
+    }
+  },
+  "directory": null
+}
