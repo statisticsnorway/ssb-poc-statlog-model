@@ -31,7 +31,7 @@
             "format": "date-time"
         },
         "quality_control_results": {
-            "description": "Quality control result: quality ok (0), quality issues detected (1), missing value detected (3)",
+            "description": "Quality control result: quality ok (0), quality issues detected (1), missing value detected (2)",
             "type": "string",
             "enum": [
                 "0",

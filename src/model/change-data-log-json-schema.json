@@ -27,7 +27,7 @@
             "type": "string"
         },
         "variable_name": {
-            "description": "The variable name (or elment-path) that contains data changes.",
+            "description": "The variable name (or element-path) that contains data changes.",
             "$comment": "The variable short name (eg. 'income' or 'address') or element path for hierarchical data (eg. 'person.adress.street' or 'person.income')",
             "type": "string"
         },
@@ -58,7 +58,7 @@
             "format": "date-time",
             "description": "Timestamp (date and time, ISO 8601) of an event or change"
         },
-        "changed_by": {
+        "change_by": {
             "type": "string",
             "description": "If manually (M): user name of the person who triggered an event; if automatically (A) name of method, function and/or process."
         },
