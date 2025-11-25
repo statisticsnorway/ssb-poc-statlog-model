@@ -1,11 +1,11 @@
 # Informasjonsmodell for kvalitetsindikatorer og prosessdata
 
 - **Versjon:** 0.3 (2025-11-19)
-- **Ansvarlig**: *Informasjonsmodellen er utabeidet av Seksjon for IT-arkitektur (S702) i samarbeid med Seksjon for metoder (S811), tech-coacher (S703) og støtte-team.*
+- **Ansvarlig**: *Informasjonsmodellen er utarbeidet av Seksjon for IT-arkitektur (S702) i samarbeid med Seksjon for metoder (S811), tech-coacher (S703) og støtte-team.*
 
 ## Bakgrunn
 
-For å kunne skape nødvendige kvalitetsindikatorer spesifisert av Seksjon for metoder må alle dataendringer som uføres i statistikkproduksjonen (klargjøringen) dokumenteres. Endringene bør dokumenteres i form av logger med strukturerte og standardiserte formater. Alle prosesser som utfører endringer, manuelle eller automatiske, må logges. Det er behov for å skille mellom logging av:
+For å kunne skape nødvendige kvalitetsindikatorer spesifisert av Seksjon for metoder må alle dataendringer som utføres i statistikkproduksjonen (klargjøringen) dokumenteres. Endringene bør dokumenteres i form av logger med strukturerte og standardiserte formater. Alle prosesser som utfører endringer, manuelle eller automatiske, må logges. Det er behov for å skille mellom logging av:
 - endring av enkelt-dataverdier for en enhet, eksempelvis endring av inntekt for person eller antall anstatte for en virksomhet
 - sletting/fjerning av enheter, dvs. at alle data for en gitt enhet forkastes av ulike årsaker (eksempelvis dårlig kvalitet)
 - oppretting av nye enheter, eksempelvis at data for en ny enhet opprettes manuelt eller imputeres
@@ -62,7 +62,7 @@ end
 
 ## Informasjonsmodell for prosessdata
 
-Det er behov for et standardistert loggformat/struktur som alle statistikkprodusenter i SSB kan forholde seg til. Et standard loggformat vil også muliggjøre utvikling av standard loggfunksjonalitet (Python og R bibliotek) som kan benyttes av alle i SSB. Det er også behov for å støtte logging av endringer uført både i flate datastrukturer (f.eks. Pandas dataframes og database-tabeller) og i hierarkisek strukturer (f.eks. json og xml).
+Det er behov for et standardisert loggformat/struktur som alle statistikkprodusenter i SSB kan forholde seg til. Et standard loggformat vil også muliggjøre utvikling av standard loggfunksjonalitet (Python og R bibliotek) som kan benyttes av alle i SSB. Det er også behov for å støtte logging av endringer utført både i flate datastrukturer (f.eks. Pandas dataframes og database-tabeller) og i hierarkiske strukturer (f.eks. json og xml).
 
 ### Endringslogg-strukturen (prosessdata) spesifisert som et Json-schema:
 - [change-data-log-json-schema.json](change-data-log-json-schema.json)
@@ -109,8 +109,8 @@ Det er nå utarbeidet et forslag til felles modell for prosessdata (dataendrings
 
 ***Versjonsinformasjon for dette dokumentet***
 
-| Versjon (dato)   | Versjonsbeskrivelse                                        |
-| ---------------- | ---------------------------------------------------------- |
-| 0.1 (2024-02-28) | Føste versjon. Presentert for Standardutvalget mars 2024.  |
+| Versjon (dato)   | Versjonsbeskrivelse                                                                                             |
+| ---------------- |-----------------------------------------------------------------------------------------------------------------|
+| 0.1 (2024-02-28) | Første versjon. Presentert for Standardutvalget mars 2024.                                                      |
 | 0.2 (2024-12-03) | - Valg av JSON Lines som filformat for prosesslogger.<br>- Oppdatert prosesslogg JSON Schema og JSON-eksempler. |
-| 0.3 (2025-11-19) | - Oppdatert modell og eksempler etter workshop på Kongsvinger i november 2025. |
+| 0.3 (2025-11-19) | - Oppdatert modell og eksempler etter workshop på Kongsvinger i november 2025.                                  |

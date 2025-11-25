@@ -11,8 +11,9 @@
     "data_change_type": "UPD",
     "change_comment": "Oppdatert gateadresse i hierarkisk XML-datafil pga. data-vasking ...",
     "change_details": {
+        "kind": "unit",
         "unit_id": [
-            {"xml-path": "familienr['010170nnnnn'].person.fnr['010199nnnnn']"}
+            {"unit_id_variable": "xml-path", "unit_id_value": "familienr['010170nnnnn'].person.fnr['010199nnnnn']"}
         ],
         "old_value": "Gamle-veien 1",
         "new_value": "Ny-veien 2"

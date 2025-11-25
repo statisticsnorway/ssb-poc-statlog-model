@@ -14,16 +14,17 @@
     "data_change_type": "NEW",
     "change_comment": "Opprettet ny enhet (person) fra ny datakilde ...",
     "change_details": {
+        "kind": "unit",
         "unit_id": [
-            {"fnr": "170598nnnnn"},
-            {"orgnr": "123456789"}
+            {"unit_id_variable": "fnr", "unit_id_value": "170598nnnnn"},
+            {"unit_id_variable": "orgnr", "unit_id_value": "123456789"}
         ],
         "old_value": null,
         "new_value": [
-            {"bostedskommune": "0101"},
-            {"type_loenn": "time"},
-            {"loenn": "38000"},
-            {"overtid_loenn": "3000"}
+            {"variable_name": "bostedskommune", "value": "0101"},
+            {"variable_name": "type_loenn", "value": "time"},
+            {"variable_name": "loenn", "value": "38000"},
+            {"variable_name": "overtid_loenn", "value": "3000"}
         ]
     }
 }

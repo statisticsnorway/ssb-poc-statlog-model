@@ -14,6 +14,7 @@
     "data_change_type": "UPD",
     "change_comment": "Kommafeil i lønn-variabelen automatisk rettet for mange rader (enheter) i datasettet.",
     "change_details": {
+        "kind": "rows",
         "rows_affected": 208496
     }
 }
