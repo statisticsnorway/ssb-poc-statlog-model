@@ -25,7 +25,7 @@ class QualityControlDescription(BaseModel):
         ..., description="Quality control description"
     )
     quality_control_type: QualityControlType = Field(
-        ..., description="Quality control type: hard (M), soft (S), informative (I)"
+        ..., description="Quality control type: hard (H), soft (S), informative (I)"
     )
     variables: list[Variable] = Field(
         ...,
