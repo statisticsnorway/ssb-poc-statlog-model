@@ -1,0 +1,59 @@
+{
+    "$id": "https://example.com/process-data.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Json schema quality control result",
+    "description": "Schema for statistics quality control result",
+    "type": "object",
+    "properties": {
+        "statistics_name": {
+            "description": "Statistics shortname or statistics product name",
+            "type": "string"
+        },
+        "quality_control_id": {
+            "description": "A reference (or link/uri) to the quality control description",
+            "type": "string"
+        },
+        "data_location": {
+            "description": "Controlled dataset reference/filepath (eg. GCS-path to a parquet file) or other dataset reference (eg. ref. to a CloudSQL database table).",
+            "$comment": "Reference to one or more data sets used for the quality control.",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "data_period": {
+            "description": "Data period controlled - eg. year, date, date-time, ...",
+            "type": "string"
+        },
+        "quality_control_datetime": {
+            "description": "Quality control datetime (date and time, ISO 8601)",
+            "type": "string",
+            "format": "date-time"
+        },
+        "quality_control_results": {
+            "description": "Quality control result: quality ok (0), quality issues detected (1), missing value detected (3)",
+            "type": "string",
+            "enum": [
+                "0",
+                "1",
+                "2"
+            ]
+        },
+        "quality_result_comment": {
+            "description": "Quality control result comment.",
+            "type": "string"
+        },
+        "quality_control_run_exception": {
+            "description": "Exception description. An error or warning occurred when executing the quality control routine.",
+            "type": "string"
+        }
+    },
+    "required": [
+        "statistics_name",
+        "quality_control_id",
+        "data_location",
+        "data_period",
+        "quality_control_datetime",
+        "quality_control_results"
+    ]
+}

@@ -1,0 +1,27 @@
+{
+    "statistics_name": "arblonn",
+    "data_source": [
+        "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"
+    ],
+    "data_target": "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
+    "data_period": "2023-12",
+    "variable_name": null,
+    "change_event": "A",
+    "change_event_reason": "DUPLICATE",
+    "change_datetime": "2024-01-10T15:00:00.000",
+    "changed_by": "arbloenn_autokontroll.py",
+    "data_change_type": "DEL",
+    "change_comment": "Data slettet automatisk av dublettkontroll.",
+    "change_details": {
+        "unit_id": [
+            {"fnr": "170598nnnnn"}
+        ],
+        "old_value": [
+            {"bostedskommune": "0301"},
+            {"type_loenn": "fast"},
+            {"loenn": "45000"},
+            {"overtid_loenn": "0"}
+        ],
+        "new_value": null
+    }
+}
