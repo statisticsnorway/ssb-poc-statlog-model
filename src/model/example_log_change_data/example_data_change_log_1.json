@@ -1,0 +1,22 @@
+{
+    "statistics_name": "arblonn",
+    "data_source": [
+        "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"
+    ],
+    "data_target": "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
+    "data_period": "2023-12",
+    "variable_name": "loenn",
+    "change_event": "M",
+    "change_event_reason": "REVIEW",
+    "change_datetime": "2024-01-10T15:00:00.000",
+    "changed_by": "zzz@ssb.no",
+    "data_change_type": "UPD",
+    "change_comment": "Endret avtalt lønn pga. ditt og datt ...",
+    "change_details": {
+        "unit_id": [
+            {"fnr": "170598nnnnn"}
+        ],
+        "old_value": "43000",
+        "new_value": "45000"
+    }
+}

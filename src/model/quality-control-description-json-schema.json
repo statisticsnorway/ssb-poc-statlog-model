@@ -1,0 +1,44 @@
+{
+    "$id": "https://example.com/process-data.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Json schema for description of quality controls",
+    "description": "Model for description of quality controls used in a statistical production",
+    "type": "object",
+    "properties": {
+        "quality_control_id": {
+            "description": "A unique quality control ID",
+            "type": "string"
+        },
+        "quality_control_description": {
+            "description": "Quality control description",
+            "type": "string"
+        },
+        "quality_control_type": {
+            "description": "Quality control type: hard (M), soft (S), informative (I)",
+            "type": "string",
+            "enum": [
+                "H",
+                "S",
+                "I"
+            ]
+        },
+        "variables": {
+            "description": "A description of which variables must be included in the quality control.",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "variable_description": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "required": [
+        "quality_control_id",
+        "quality_control_description",
+        "quality_control_type",
+        "variables"
+    ]
+}

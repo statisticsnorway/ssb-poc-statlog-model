@@ -1,0 +1,175 @@
+{
+    "$id": "https://example.com/process-data.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Json schema for Dapla data change log (process data)",
+    "description": "Data model for data change log in a statistical production process",
+    "type": "object",
+    "properties": {
+        "statistics_name": {
+            "description": "Statistics shortname or statistics product name",
+            "type": "string"
+        },
+        "data_source": {
+            "description": "Reference or filepath to one or more input datasets used as data source before changing data.",
+            "$comment": "Dataset filepath (eg. GCS-path to a parquet file).",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "data_target": {
+            "description": "Target dataset filepath (eg. GCS-path to a parquet file).",
+            "$comment": "Location for target dataset (where data is stored after changes have been made).",
+            "type": "string"
+        },
+        "data_period": {
+            "description": "Data period for changed data - eg. a year, quarter, month, day (date), ...",
+            "type": "string"
+        },
+        "variable_name": {
+            "description": "The variable name (or elment-path) that contains data changes.",
+            "$comment": "The variable short name (eg. 'income' or 'address') or element path for hierarchical data (eg. 'person.adress.street' or 'person.income')",
+            "type": "string"
+        },
+        "change_event": {
+            "description": "How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT)",
+            "type": "string",
+            "enum": [
+                "A",
+                "M",
+                "MNC",
+                "NOT"
+            ]
+        },
+        "change_event_reason": {
+            "description": "Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER)",
+            "type": "string",
+            "enum": [
+                "OTHER_SOURCE",
+                "REVIEW",
+                "OWNER",
+                "MARGINAL_UNIT",
+                "DUPLICATE",
+                "OTHER"
+            ]
+        },
+        "change_datetime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp (date and time, ISO 8601) of an event or change"
+        },
+        "changed_by": {
+            "type": "string",
+            "description": "If manually (M): user name of the person who triggered an event; if automatically (A) name of method, function and/or process."
+        },
+        "data_change_type": {
+            "description": "Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL)",
+            "type": "string",
+            "enum": [
+                "NEW",
+                "UPD",
+                "DEL"
+            ]
+        },
+        "change_comment": {
+            "description": "Change comment",
+            "type": "string"
+        },
+        "change_details": {
+            "description": "Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units).",
+            "oneOf": [
+                {
+                    "rows_affected": {
+                        "description": "Number of rows affected if the process changed multiple rows (units).",
+                        "type": "integer"
+                    }
+                },
+                {
+                    "unit_id": {
+                        "description": "One or more unit-identifier variables and values (primary key) if ​​one row (unit) was affected, eg. 'fnr'='311280nnnnn' and 'orgnr'='123456789'.",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "unit_id_variable": {
+                                    "description": "The unit-id variable name, e.g. 'fnr', 'pers_id', 'reg_nr' or 'komm_nr'.",
+                                    "type": "string"
+                                },
+                                "unit_id_value": {
+                                    "description": "The unit-id value, e.g. '311280nnnnn' or '123456789'.",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "old_value": {
+                        "description": "Old value(s)",
+                        "oneOf": [
+                            {
+                                "description": "Previous value if value updated (data_change_type = UPD).",
+                                "type": "string"
+                            },
+                            {
+                                "description": "If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "variable_name": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "description": "If deleting a complex object (eg. a json document).",
+                                "type": "object"
+                            }
+                        ]
+                    },
+                    "new_value": {
+                        "description": "New value(s)",
+                        "oneOf": [
+                            {
+                                "description": "The new value if value updated (data_change_type = UPD).",
+                                "type": "string"
+                            },
+                            {
+                                "description": "If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "variable_name": {
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "description": "If inserting a new complex object (eg. a json document).",
+                                "type": "object"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    "required": [
+        "statistics_name",
+        "data_source",
+        "data_target",
+        "data_period",
+        "change_event",
+        "change_datetime",
+        "change_by",
+        "change_details"
+    ]
+}
