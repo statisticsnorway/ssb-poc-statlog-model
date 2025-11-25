@@ -45,7 +45,7 @@ subgraph quality_frame["Kvalitetsindikatorer"]
     dataset  ---- | leser | qc_routine
 end
 ```
-***Skissen viser hvordan kvalitetsindikatorer skapes fra prosessdata (data endringslogger) som oppstår under klargjøringsprosessen.*** 
+***Skissen viser hvordan kvalitetsindikatorer skapes fra prosessdata (data endringslogger) som oppstår under klargjøringsprosessen.***
 
 ---
 
@@ -70,7 +70,7 @@ Det er behov for et standardistert loggformat/struktur som alle statistikkprodus
 
 #### Eksempel-data og eksempler på endringslogger:
 
-| fnr         | periode | bostedskommune  | type_loenn | loenn        | overtid_loenn | 
+| fnr         | periode | bostedskommune  | type_loenn | loenn        | overtid_loenn |
 | ----------- | ------- | --------------- | ---------- | ------------ | ------------- |
 | 311280nnnnn | 2023-12 | 0301            | fast       | 45 000       |  0            |
 | 170598nnnnn | 2023-12 | 0101            | time       | 38 000       |  3000         |

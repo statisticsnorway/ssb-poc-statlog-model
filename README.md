@@ -1,5 +1,8 @@
 # SSB POC Statlog Model
 
+This repo is a proof of concept (POC) of models for logging data from a statistics
+production run.
+
 [![PyPI](https://img.shields.io/pypi/v/ssb-poc-statlog-model.svg)][pypi status]
 [![Status](https://img.shields.io/pypi/status/ssb-poc-statlog-model.svg)][pypi status]
 [![Python Version](https://img.shields.io/pypi/pyversions/ssb-poc-statlog-model)][pypi status]
@@ -26,7 +29,8 @@
 
 ## Features
 
-- TODO
+- Contains json schema models for the data to be logged.
+- Contains pydantic models, that is python data validation classes for the json schemas.
 
 ## Requirements
 
