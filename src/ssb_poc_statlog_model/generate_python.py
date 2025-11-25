@@ -43,10 +43,7 @@ def _derive_output_filename(schema_path: Path) -> str:
             stem = stem[: -len(suffix)]
             break
     # Convert hyphens to underscores
-    snake = stem.replace("-", "_")
-    # Ensure a valid Python module filename
-    if not snake:
-        snake = "model"
+    snake = stem.replace("-", "_") or "model"
     return f"{snake}.py"
 
 
