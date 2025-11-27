@@ -9,7 +9,7 @@
     "variable_name": "loenn",
     "change_event": "A",
     "change_event_reason": "OTHER",
-    "change_datetime": "2024-01-10T15:00:00.000",
+    "change_datetime": "2024-01-10T15:00:00.000Z",
     "changed_by": "arblonn_automagisk_metode.py",
     "data_change_type": "UPD",
     "change_comment": "Kommafeil i lønn-variabelen automatisk rettet for mange rader (enheter) i datasettet.",

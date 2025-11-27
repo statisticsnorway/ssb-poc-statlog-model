@@ -70,6 +70,7 @@ def _run_codegen(
         "--use-standard-collections",
         "--use-double-quotes",
         "--use-union-operator",
+        "--disable-timestamp",
         # "--use-schema-description",
         # The project targets >=3.10; keep generated syntax compatible with 3.10
         "--target-python-version",
