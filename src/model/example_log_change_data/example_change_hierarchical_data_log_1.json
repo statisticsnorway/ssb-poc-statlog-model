@@ -6,7 +6,7 @@
     "variable_name": "adresse.gateadresse",
     "change_event": "M",
     "change_event_reason": "REVIEW",
-    "change_datetime": "2021-01-10T15:00:00.000",
+    "change_datetime": "2021-01-10T15:00:00.000Z",
     "changed_by": "zzz@ssb.no",
     "data_change_type": "UPD",
     "change_comment": "Oppdatert gateadresse i hierarkisk XML-datafil pga. data-vasking ...",

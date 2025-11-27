@@ -58,7 +58,7 @@
             "format": "date-time",
             "description": "Timestamp (date and time, ISO 8601) of an event or change"
         },
-        "change_by": {
+        "changed_by": {
             "type": "string",
             "description": "If manually (M): user name of the person who triggered an event; if automatically (A) name of method, function and/or process."
         },
@@ -192,7 +192,7 @@
         "data_period",
         "change_event",
         "change_datetime",
-        "change_by",
+        "changed_by",
         "change_details"
     ]
 }
