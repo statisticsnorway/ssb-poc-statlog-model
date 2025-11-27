@@ -1,4 +1,5 @@
-from datetime import UTC, datetime
+from datetime import datetime, timezone
+from typing import Any
 
 import pytest
 from pydantic import ValidationError
@@ -12,7 +13,7 @@ from ssb_poc_statlog_model.change_data_log import (
 )
 
 
-def make_common_fields() -> dict:
+def make_common_fields() -> dict[str, Any]:
     return {
         "statistics_name": "arblonn",
         "data_source": [
@@ -23,7 +24,7 @@ def make_common_fields() -> dict:
         "variable_name": "loenn",
         "change_event": ChangeEvent.M,
         "change_event_reason": ChangeEventReason.REVIEW,
-        "change_datetime": datetime(2024, 1, 10, 15, 0, 0, tzinfo=UTC),
+        "change_datetime": datetime(2024, 1, 10, 15, 0, 0, tzinfo=timezone.utc),
         "changed_by": "user@example.com",
         "data_change_type": DataChangeType.UPD,
         "change_comment": "Some reason...",

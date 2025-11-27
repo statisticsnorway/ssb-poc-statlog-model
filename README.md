@@ -50,7 +50,7 @@ Please see the [Reference Guide] for API details. A quick example using the
 generated `ChangeDataLog` model:
 
 ```python
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from ssb_poc_statlog_model.change_data_log import ChangeDataLog, DataChangeType
 
 payload = {
@@ -60,7 +60,7 @@ payload = {
     "data_period": "2023-12",
     "change_event": "A",
     "change_event_reason": "OTHER_SOURCE",
-    "change_datetime": datetime(2024, 1, 10, 15, 0, tzinfo=UTC),
+    "change_datetime": datetime(2024, 1, 10, 15, 0, tzinfo=timezone.utc),
     "changed_by": "user@example.com",
     "data_change_type": DataChangeType.NEW,
     "change_comment": "Opprettet ny enhet (person) fra ny datakilde ...",

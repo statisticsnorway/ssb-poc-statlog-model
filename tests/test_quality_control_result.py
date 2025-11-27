@@ -1,4 +1,5 @@
-from datetime import UTC, datetime
+from datetime import datetime, timezone
+from typing import Any
 
 import pytest
 from pydantic import ValidationError
@@ -9,7 +10,7 @@ from ssb_poc_statlog_model.quality_control_result import (
 )
 
 
-def _valid_payload(result_value: QualityControlResults) -> dict:
+def _valid_payload(result_value: QualityControlResults) -> dict[str, Any]:
     return {
         "statistics_name": "arblonn",
         "quality_control_id": "QC-001",
@@ -17,7 +18,9 @@ def _valid_payload(result_value: QualityControlResults) -> dict:
             "gs://bucket/path/input.parquet",
         ],
         "data_period": "2023-12",
-        "quality_control_datetime": datetime(2024, 1, 10, 15, 0, 0, tzinfo=UTC),
+        "quality_control_datetime": datetime(
+            2024, 1, 10, 15, 0, 0, tzinfo=timezone.utc
+        ),
         "quality_control_results": result_value,
         "quality_result_comment": "All good",
     }

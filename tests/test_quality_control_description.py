@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 from pydantic import ValidationError
 
@@ -7,7 +9,7 @@ from ssb_poc_statlog_model.quality_control_description import (
 )
 
 
-def _valid_payload(qc_type: QualityControlType) -> dict:
+def _valid_payload(qc_type: QualityControlType) -> dict[str, Any]:
     return {
         "quality_control_id": "QC-001",
         "quality_control_description": "Checks that X holds for Y",
