@@ -1,5 +1,5 @@
 {
-    "$id": "https://ssb.no/ssb-poc-statlog-model/schemas/change-data-log/0.9.0",
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/change-data-log/0.9.0",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Change data log",
     "description": "Data model for data change log in a statistical production process",
@@ -78,7 +78,7 @@
         "change_details": {
             "description": "Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units).",
             "discriminator": {
-                "propertyName": "kind",
+                "propertyName": "detail_type",
                 "mapping": {
                     "rows": "#/properties/change_details/oneOf/0",
                     "unit": "#/properties/change_details/oneOf/1"
@@ -88,22 +88,27 @@
                 {
                     "type": "object",
                     "properties": {
-                        "kind": {
+                        "detail_type": {
                             "description": "Discriminator for change_details variant",
                             "const": "rows"
                         },
                         "rows_affected": {
                             "description": "Number of rows affected if the process changed multiple rows (units).",
                             "type": "integer"
+                        },
+                        "variable_name": {
+                            "description": "The variable name (or element-path) that contains data changes.",
+                            "$comment": "The variable short name (eg. 'income' or 'address') or element path for hierarchical data (eg. 'person.adress.street' or 'person.income')",
+                            "type": "string"
                         }
                     },
-                    "required": ["kind", "rows_affected"],
+                    "required": ["detail_type", "rows_affected"],
                     "additionalProperties": false
                 },
                 {
                     "type": "object",
                     "properties": {
-                        "kind": {
+                        "detail_type" : {
                             "description": "Discriminator for change_details variant",
                             "const": "unit"
                         },
@@ -127,59 +132,32 @@
                             }
                         },
                         "old_value": {
-                            "description": "Old value(s)",
-                            "oneOf": [
-                                {
-                                    "description": "Previous value if value updated (data_change_type = UPD).",
-                                    "type": "string"
+                            "description": "Old value(s). If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "variable_name": {"type": "string"},
+                                    "value": {"type": "string"}
                                 },
-                                {
-                                    "description": "If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "variable_name": {"type": "string"},
-                                            "value": {"type": "string"}
-                                        },
-                                        "required": ["variable_name", "value"],
-                                        "additionalProperties": false
-                                    }
-                                },
-                                {
-                                    "description": "If deleting a complex object (eg. a json document).",
-                                    "type": "object"
-                                }
-                            ]
+                                "required": ["variable_name", "value"],
+                                "additionalProperties": false
+                            }
                         },
                         "new_value": {
-                            "description": "New value(s)",
-                            "oneOf": [
-                                {
-                                    "description": "The new value if value updated (data_change_type = UPD).",
-                                    "type": "string"
+                            "description": "New value(s). If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "variable_name": {"type": "string"},
+                                    "value": {"type": "string"}
                                 },
-                                {
-                                    "description": "If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "variable_name": {"type": "string"},
-                                            "value": {"type": "string"}
-                                        },
-                                        "required": ["variable_name", "value"],
-                                        "additionalProperties": false
-                                    }
-                                },
-                                {
-                                    "description": "If inserting a new complex object (eg. a json document).",
-                                    "type": "object"
-                                }
-                            ]
+                                "required": ["variable_name", "value"],
+                                "additionalProperties": false
+                            }
                         }
                     },
-                    "required": ["kind", "unit_id"],
+                    "required": ["detail_type", "unit_id"],
                     "additionalProperties": false
                 }
             ]

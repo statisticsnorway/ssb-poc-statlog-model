@@ -13,11 +13,15 @@
     "data_change_type": "UPD",
     "change_comment": "Endret avtalt lønn pga. ditt og datt ...",
     "change_details": {
-        "kind": "unit",
+        "detail_type": "unit",
         "unit_id": [
             {"unit_id_variable": "fnr", "unit_id_value": "170598nnnnn"}
         ],
-        "old_value": "43000",
-        "new_value": "45000"
+        "old_value": [
+            {"variable_name": "loenn", "value": "43000"}
+        ],
+        "new_value": [
+            {"variable_name": "loenn", "value": "45000"}
+        ]
     }
 }

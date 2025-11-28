@@ -14,7 +14,7 @@
     "data_change_type": "NEW",
     "change_comment": "Opprettet ny enhet (person) fra ny datakilde ...",
     "change_details": {
-        "kind": "unit",
+        "detail_type": "unit",
         "unit_id": [
             {"unit_id_variable": "fnr", "unit_id_value": "170598nnnnn"},
             {"unit_id_variable": "orgnr", "unit_id_value": "123456789"}

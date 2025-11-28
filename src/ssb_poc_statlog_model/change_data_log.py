@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any, Literal
+from typing import Literal
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
@@ -35,12 +35,16 @@ class ChangeDetails(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: Literal["rows"] = Field(
+    detail_type: Literal["rows"] = Field(
         "rows", description="Discriminator for change_details variant"
     )
     rows_affected: int = Field(
         ...,
         description="Number of rows affected if the process changed multiple rows (units).",
+    )
+    variable_name: str | None = Field(
+        None,
+        description="The variable name (or element-path) that contains data changes.",
     )
 
 
@@ -77,18 +81,20 @@ class ChangeDetails1(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: Literal["unit"] = Field(
+    detail_type: Literal["unit"] = Field(
         "unit", description="Discriminator for change_details variant"
     )
     unit_id: list[UnitIdItem] = Field(
         ...,
         description="One or more unit-identifier variables and values (primary key) if one row (unit) was affected, eg. 'fnr'='311280nnnnn' and 'orgnr'='123456789'.",
     )
-    old_value: str | list[OldValueItem] | dict[str, Any] | None = Field(
-        None, description="Old value(s)"
+    old_value: list[OldValueItem] | None = Field(
+        None,
+        description="Old value(s). If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
     )
-    new_value: str | list[NewValueItem] | dict[str, Any] | None = Field(
-        None, description="New value(s)"
+    new_value: list[NewValueItem] | None = Field(
+        None,
+        description="New value(s). If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
     )
 
 
@@ -134,5 +140,5 @@ class ChangeDataLog(BaseModel):
     change_details: ChangeDetails | ChangeDetails1 = Field(
         ...,
         description="Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units).",
-        discriminator="kind",
+        discriminator="detail_type",
     )

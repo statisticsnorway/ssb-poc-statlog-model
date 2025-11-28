@@ -13,7 +13,7 @@
     "data_change_type": "DEL",
     "change_comment": "Data slettet automatisk av dublettkontroll.",
     "change_details": {
-        "kind": "unit",
+        "detail_type": "unit",
         "unit_id": [
             {"unit_id_variable": "fnr", "unit_id_value": "170598nnnnn"}
         ],
