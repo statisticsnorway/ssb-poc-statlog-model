@@ -128,6 +128,7 @@ ignore = [
     "E501",   # Supress line-too-long warnings: trust black's judgement on this one.
     "PLR2004", # Allow to compare with unnamed numerical constants.
 ]
+extend-safe-fixes = ["D200"]  # Concider converting docstring to one line safe.
 
 [tool.ruff.lint.isort]
 force-single-line = false

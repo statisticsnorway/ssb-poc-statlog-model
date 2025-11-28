@@ -10,6 +10,8 @@ from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
 
 class ChangeEvent(str, Enum):
+    """How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT)."""
+
     A = "A"
     M = "M"
     MNC = "MNC"
@@ -17,6 +19,8 @@ class ChangeEvent(str, Enum):
 
 
 class ChangeEventReason(str, Enum):
+    """Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER)."""
+
     OTHER_SOURCE = "OTHER_SOURCE"
     REVIEW = "REVIEW"
     OWNER = "OWNER"
@@ -26,12 +30,16 @@ class ChangeEventReason(str, Enum):
 
 
 class DataChangeType(str, Enum):
+    """Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL)."""
+
     NEW = "NEW"
     UPD = "UPD"
     DEL = "DEL"
 
 
 class ChangeDetails(BaseModel):
+    """Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units)."""
+
     model_config = ConfigDict(
         extra="forbid",
     )
@@ -78,6 +86,8 @@ class NewValueItem(BaseModel):
 
 
 class ChangeDetails1(BaseModel):
+    """Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units)."""
+
     model_config = ConfigDict(
         extra="forbid",
     )
@@ -99,6 +109,8 @@ class ChangeDetails1(BaseModel):
 
 
 class ChangeDataLog(BaseModel):
+    """Data model for data change log in a statistical production process."""
+
     statistics_name: str = Field(
         ..., description="Statistics shortname or statistics product name"
     )
@@ -119,11 +131,11 @@ class ChangeDataLog(BaseModel):
     )
     change_event: ChangeEvent = Field(
         ...,
-        description="How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT)",
+        description="How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT).",
     )
     change_event_reason: ChangeEventReason | None = Field(
         None,
-        description="Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER)",
+        description="Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER).",
     )
     change_datetime: AwareDatetime = Field(
         ..., description="Timestamp (date and time, ISO 8601) of an event or change"
@@ -134,7 +146,7 @@ class ChangeDataLog(BaseModel):
     )
     data_change_type: DataChangeType | None = Field(
         None,
-        description="Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL)",
+        description="Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL).",
     )
     change_comment: str | None = Field(None, description="Change comment")
     change_details: ChangeDetails | ChangeDetails1 = Field(

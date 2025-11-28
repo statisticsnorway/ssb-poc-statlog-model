@@ -2,7 +2,7 @@
     "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/change-data-log/0.9.0",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Change data log",
-    "description": "Data model for data change log in a statistical production process",
+    "description": "Data model for data change log in a statistical production process.",
     "type": "object",
     "properties": {
         "statistics_name": {
@@ -32,7 +32,7 @@
             "type": "string"
         },
         "change_event": {
-            "description": "How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT)",
+            "description": "How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT).",
             "type": "string",
             "enum": [
                 "A",
@@ -42,7 +42,7 @@
             ]
         },
         "change_event_reason": {
-            "description": "Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER)",
+            "description": "Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER).",
             "type": "string",
             "enum": [
                 "OTHER_SOURCE",
@@ -63,7 +63,7 @@
             "description": "If manually (M): user name of the person who triggered an event; if automatically (A) name of method, function and/or process."
         },
         "data_change_type": {
-            "description": "Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL)",
+            "description": "Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL).",
             "type": "string",
             "enum": [
                 "NEW",

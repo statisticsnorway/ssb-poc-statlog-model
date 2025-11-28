@@ -2,7 +2,7 @@
     "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/quality-control-result/0.9.0",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Quality control result",
-    "description": "Schema for statistics quality control result",
+    "description": "Schema for statistics quality control result.",
     "type": "object",
     "properties": {
         "statistics_name": {
@@ -31,7 +31,7 @@
             "format": "date-time"
         },
         "quality_control_results": {
-            "description": "Quality control result: quality ok (0), quality issues detected (1), missing value detected (2)",
+            "description": "Quality control result: quality ok (0), quality issues detected (1), missing value detected (2).",
             "type": "string",
             "enum": [
                 "0",

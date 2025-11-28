@@ -9,6 +9,8 @@ from pydantic import BaseModel, Field
 
 
 class QualityControlType(str, Enum):
+    """Quality control type: hard (M), soft (S), informative (I)."""
+
     H = "H"
     S = "S"
     I = "I"
@@ -19,12 +21,14 @@ class Variable(BaseModel):
 
 
 class QualityControlDescription(BaseModel):
+    """Model for description of quality controls used in a statistical production."""
+
     quality_control_id: str = Field(..., description="A unique quality control ID")
     quality_control_description: str = Field(
         ..., description="Quality control description"
     )
     quality_control_type: QualityControlType = Field(
-        ..., description="Quality control type: hard (M), soft (S), informative (I)"
+        ..., description="Quality control type: hard (M), soft (S), informative (I)."
     )
     variables: list[Variable] = Field(
         ...,

@@ -71,7 +71,7 @@ def _run_codegen(
         "--use-double-quotes",
         "--use-union-operator",
         "--disable-timestamp",
-        # "--use-schema-description",
+        "--use-schema-description",
         # The project targets >=3.10; keep generated syntax compatible with 3.10
         "--target-python-version",
         "3.10",
@@ -108,6 +108,25 @@ def _discover_schemas(
     )
     # Sort for stable output
     return sorted(p.resolve() for p in candidates)
+
+
+def _fix_docstrings(directory: Path) -> None:
+    """Run ruff on generated Python files to fix docstrings."""
+    cmd = [sys.executable, "-m", "ruff", "check", "--fix", str(directory)]
+    click.echo(f"[ruff] Fixing docstrings in {directory}:")
+    try:
+        subprocess.run(cmd, check=True)
+    except FileNotFoundError as e:
+        raise click.ClickException(
+            "ruff is not available. Install dev deps with:\n"
+            "  poetry install\n"
+            "Or add it explicitly:\n"
+            "  poetry add -G dev ruff"
+        ) from e
+    except subprocess.CalledProcessError as e:
+        raise click.ClickException(
+            f"ruff formatting failed for {directory} (exit code {e.returncode})."
+        ) from e
 
 
 @click.command(context_settings={"help_option_names": ["-h", "--help"]})
@@ -157,6 +176,8 @@ def main(
     for schema_path in targets:
         out_file = out_dir / _derive_output_filename(schema_path)
         _run_codegen(schema_path, out_file, extra_args=list(extra_arg))
+
+    _fix_docstrings(out_dir)
 
     click.echo("\nDone.")
 
