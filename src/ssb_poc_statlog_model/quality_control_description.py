@@ -5,22 +5,24 @@ from __future__ import annotations
 
 from enum import Enum
 
-from pydantic import BaseModel, Field
+from pydantic import Field
+
+from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 
 
 class QualityControlType(str, Enum):
-    """Quality control type: hard (M), soft (S), informative (I)."""
+    """Quality control type: hard (H), soft (S), informative (I)."""
 
     H = "H"
     S = "S"
     I = "I"
 
 
-class Variable(BaseModel):
+class Variable(StatlogBaseModel):
     variable_description: str | None = None
 
 
-class QualityControlDescription(BaseModel):
+class QualityControlDescription(StatlogBaseModel):
     """Model for description of quality controls used in a statistical production."""
 
     quality_control_id: str = Field(..., description="A unique quality control ID")
@@ -28,7 +30,7 @@ class QualityControlDescription(BaseModel):
         ..., description="Quality control description"
     )
     quality_control_type: QualityControlType = Field(
-        ..., description="Quality control type: hard (M), soft (S), informative (I)."
+        ..., description="Quality control type: hard (H), soft (S), informative (I)."
     )
     variables: list[Variable] = Field(
         ...,

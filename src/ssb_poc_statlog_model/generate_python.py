@@ -63,6 +63,8 @@ def _run_codegen(
         str(input_schema),
         "--output-model-type",
         "pydantic_v2.BaseModel",
+        "--base-class",
+        "ssb_poc_statlog_model.statlog_base_model.StatlogBaseModel",
         "--use-default",
         "--use-title-as-name",
         "--use-one-literal-as-default",
@@ -72,7 +74,6 @@ def _run_codegen(
         "--use-union-operator",
         "--disable-timestamp",
         "--use-schema-description",
-        # The project targets >=3.10; keep generated syntax compatible with 3.10
         "--target-python-version",
         "3.10",
         "--output",

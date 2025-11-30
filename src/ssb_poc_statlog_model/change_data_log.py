@@ -6,7 +6,9 @@ from __future__ import annotations
 from enum import Enum
 from typing import Literal
 
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
+from pydantic import AwareDatetime, ConfigDict, Field
+
+from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 
 
 class ChangeEvent(str, Enum):
@@ -37,7 +39,7 @@ class DataChangeType(str, Enum):
     DEL = "DEL"
 
 
-class ChangeDetails(BaseModel):
+class ChangeDetails(StatlogBaseModel):
     """Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units)."""
 
     model_config = ConfigDict(
@@ -56,7 +58,7 @@ class ChangeDetails(BaseModel):
     )
 
 
-class UnitIdItem(BaseModel):
+class UnitIdItem(StatlogBaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
@@ -69,7 +71,7 @@ class UnitIdItem(BaseModel):
     )
 
 
-class OldValueItem(BaseModel):
+class OldValueItem(StatlogBaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
@@ -77,7 +79,7 @@ class OldValueItem(BaseModel):
     value: str
 
 
-class NewValueItem(BaseModel):
+class NewValueItem(StatlogBaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
@@ -85,7 +87,7 @@ class NewValueItem(BaseModel):
     value: str
 
 
-class ChangeDetails1(BaseModel):
+class ChangeDetails1(StatlogBaseModel):
     """Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units)."""
 
     model_config = ConfigDict(
@@ -108,7 +110,7 @@ class ChangeDetails1(BaseModel):
     )
 
 
-class ChangeDataLog(BaseModel):
+class ChangeDataLog(StatlogBaseModel):
     """Data model for data change log in a statistical production process."""
 
     statistics_name: str = Field(
