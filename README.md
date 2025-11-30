@@ -53,19 +53,19 @@ generated `ChangeDataLog` model:
 from datetime import datetime, timezone
 from ssb_poc_statlog_model.change_data_log import ChangeDataLog, DataChangeType
 
-payload = {
-    "statistics_name": "arblonn",
-    "data_source": ["gs://ssb-myteam-produkt-prod/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"],
-    "data_target": "gs://ssb-myteam-produkt-prod/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
-    "data_period": "2023-12",
-    "change_event": "A",
-    "change_event_reason": "OTHER_SOURCE",
-    "change_datetime": datetime(2024, 1, 10, 15, 0, tzinfo=timezone.utc),
-    "changed_by": "user@example.com",
-    "data_change_type": DataChangeType.NEW,
-    "change_comment": "Opprettet ny enhet (person) fra ny datakilde ...",
-    "change_details": {
-        "kind": "unit",
+change = ChangeDataLog(
+    statistics_name="arblonn",
+    data_source=["gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"],
+    data_target="gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
+    data_period="2023-12",
+    change_event="A",
+    change_event_reason="OTHER_SOURCE",
+    change_datetime = datetime(2024, 1, 10, 15, 0, tzinfo=timezone.utc),
+    changed_by="user@example.com",
+    data_change_type=DataChangeType.NEW,
+    change_comment="Opprettet ny enhet (person) fra ny datakilde ...",
+    change_details={
+        "detail_type": "unit",
         "unit_id": [
             {"unit_id_variable": "fnr", "unit_id_value": "170598nnnnn"},
             {"unit_id_variable": "orgnr", "unit_id_value": "123456789"}
@@ -77,10 +77,9 @@ payload = {
             {"variable_name": "overtid_loenn", "value": "3000"}
         ]
     }
-}
+)
 
-model = ChangeDataLog(**payload)
-print(model.model_dump())
+print(change.model_dump_json())
 ```
 
 Tip about timestamps in JSON: use ISO 8601 with timezone information (e.g. `…Z` for
