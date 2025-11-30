@@ -102,11 +102,11 @@ class ChangeDetails1(StatlogBaseModel):
     )
     old_value: list[OldValueItem] | None = Field(
         None,
-        description="Old value(s). If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
+        description="Old value(s). If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'address'='Street 123', ...",
     )
     new_value: list[NewValueItem] | None = Field(
         None,
-        description="New value(s). If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
+        description="New value(s). If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'address'='Street 123', ...",
     )
 
 

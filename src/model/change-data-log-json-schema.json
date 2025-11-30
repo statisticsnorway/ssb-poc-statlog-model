@@ -28,7 +28,7 @@
         },
         "variable_name": {
             "description": "The variable name (or element-path) that contains data changes.",
-            "$comment": "The variable short name (eg. 'income' or 'address') or element path for hierarchical data (eg. 'person.adress.street' or 'person.income')",
+            "$comment": "The variable short name (eg. 'income' or 'address') or element path for hierarchical data (eg. 'person.address.street' or 'person.income')",
             "type": "string"
         },
         "change_event": {
@@ -98,7 +98,7 @@
                         },
                         "variable_name": {
                             "description": "The variable name (or element-path) that contains data changes.",
-                            "$comment": "The variable short name (eg. 'income' or 'address') or element path for hierarchical data (eg. 'person.adress.street' or 'person.income')",
+                            "$comment": "The variable short name (eg. 'income' or 'address') or element path for hierarchical data (eg. 'person.address.street' or 'person.income')",
                             "type": "string"
                         }
                     },
@@ -108,7 +108,7 @@
                 {
                     "type": "object",
                     "properties": {
-                        "detail_type" : {
+                        "detail_type": {
                             "description": "Discriminator for change_details variant",
                             "const": "unit"
                         },
@@ -132,7 +132,7 @@
                             }
                         },
                         "old_value": {
-                            "description": "Old value(s). If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
+                            "description": "Old value(s). If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'address'='Street 123', ...",
                             "items": {
                                 "type": "object",
                                 "properties": {
@@ -144,7 +144,7 @@
                             }
                         },
                         "new_value": {
-                            "description": "New value(s). If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'adress'='Street 123', ...",
+                            "description": "New value(s). If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'address'='Street 123', ...",
                             "type": "array",
                             "items": {
                                 "type": "object",
