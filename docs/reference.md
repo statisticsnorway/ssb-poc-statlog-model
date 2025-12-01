@@ -13,14 +13,30 @@ delete the .rst file afterwards.
 
 ```{eval-rst}
 ssb\_poc\_statlog\_model package
-=============================================================================
+================================
 
 
-ssb\_poc\_statlog\_model.functions module
------------------------------------------------------------------------------
+ssb\_poc\_statlog\_model.change\_data\_log module
+-------------------------------------------------
 
-.. automodule:: ssb_poc_statlog_model.functions
+.. automodule:: ssb_poc_statlog_model.change_data_log
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
+
+ssb\_poc\_statlog\_model.quality\_control\_description module
+-------------------------------------------------------------
+
+.. automodule:: ssb_poc_statlog_model.quality_control_description
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+ssb\_poc\_statlog\_model.quality\_control\_result module
+--------------------------------------------------------
+
+.. automodule:: ssb_poc_statlog_model.quality_control_result
+   :members:
+   :show-inheritance:
+   :undoc-members:
 ```

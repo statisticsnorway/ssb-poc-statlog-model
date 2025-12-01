@@ -1,8 +1,8 @@
 {
-    "$id": "https://ssb.no/ssb-poc-statlog-model/schemas/quality-control-description/0.9.0",
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/quality-control-description/0.9.0",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Quality control description",
-    "description": "Model for description of quality controls used in a statistical production",
+    "description": "Model for description of quality controls used in a statistical production.",
     "type": "object",
     "properties": {
         "quality_control_id": {
@@ -14,7 +14,7 @@
             "type": "string"
         },
         "quality_control_type": {
-            "description": "Quality control type: hard (M), soft (S), informative (I)",
+            "description": "Quality control type: hard (H), soft (S), informative (I).",
             "type": "string",
             "enum": [
                 "H",

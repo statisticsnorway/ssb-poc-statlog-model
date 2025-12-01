@@ -4,12 +4,16 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any, Literal
+from typing import Literal
 
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
+from pydantic import AwareDatetime, ConfigDict, Field
+
+from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 
 
 class ChangeEvent(str, Enum):
+    """How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT)."""
+
     A = "A"
     M = "M"
     MNC = "MNC"
@@ -17,6 +21,8 @@ class ChangeEvent(str, Enum):
 
 
 class ChangeEventReason(str, Enum):
+    """Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER)."""
+
     OTHER_SOURCE = "OTHER_SOURCE"
     REVIEW = "REVIEW"
     OWNER = "OWNER"
@@ -26,25 +32,33 @@ class ChangeEventReason(str, Enum):
 
 
 class DataChangeType(str, Enum):
+    """Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL)."""
+
     NEW = "NEW"
     UPD = "UPD"
     DEL = "DEL"
 
 
-class ChangeDetails(BaseModel):
+class ChangeDetails(StatlogBaseModel):
+    """Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units)."""
+
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: Literal["rows"] = Field(
+    detail_type: Literal["rows"] = Field(
         "rows", description="Discriminator for change_details variant"
     )
     rows_affected: int = Field(
         ...,
         description="Number of rows affected if the process changed multiple rows (units).",
     )
+    variable_name: str | None = Field(
+        None,
+        description="The variable name (or element-path) that contains data changes.",
+    )
 
 
-class UnitIdItem(BaseModel):
+class UnitIdItem(StatlogBaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
@@ -57,7 +71,7 @@ class UnitIdItem(BaseModel):
     )
 
 
-class OldValueItem(BaseModel):
+class OldValueItem(StatlogBaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
@@ -65,7 +79,7 @@ class OldValueItem(BaseModel):
     value: str
 
 
-class NewValueItem(BaseModel):
+class NewValueItem(StatlogBaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
@@ -73,26 +87,32 @@ class NewValueItem(BaseModel):
     value: str
 
 
-class ChangeDetails1(BaseModel):
+class ChangeDetails1(StatlogBaseModel):
+    """Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units)."""
+
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: Literal["unit"] = Field(
+    detail_type: Literal["unit"] = Field(
         "unit", description="Discriminator for change_details variant"
     )
     unit_id: list[UnitIdItem] = Field(
         ...,
         description="One or more unit-identifier variables and values (primary key) if one row (unit) was affected, eg. 'fnr'='311280nnnnn' and 'orgnr'='123456789'.",
     )
-    old_value: str | list[OldValueItem] | dict[str, Any] | None = Field(
-        None, description="Old value(s)"
+    old_value: list[OldValueItem] | None = Field(
+        None,
+        description="Old value(s). If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'address'='Street 123', ...",
     )
-    new_value: str | list[NewValueItem] | dict[str, Any] | None = Field(
-        None, description="New value(s)"
+    new_value: list[NewValueItem] | None = Field(
+        None,
+        description="New value(s). If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'address'='Street 123', ...",
     )
 
 
-class ChangeDataLog(BaseModel):
+class ChangeDataLog(StatlogBaseModel):
+    """Data model for data change log in a statistical production process."""
+
     statistics_name: str = Field(
         ..., description="Statistics shortname or statistics product name"
     )
@@ -113,11 +133,11 @@ class ChangeDataLog(BaseModel):
     )
     change_event: ChangeEvent = Field(
         ...,
-        description="How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT)",
+        description="How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT).",
     )
     change_event_reason: ChangeEventReason | None = Field(
         None,
-        description="Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER)",
+        description="Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER).",
     )
     change_datetime: AwareDatetime = Field(
         ..., description="Timestamp (date and time, ISO 8601) of an event or change"
@@ -128,11 +148,11 @@ class ChangeDataLog(BaseModel):
     )
     data_change_type: DataChangeType | None = Field(
         None,
-        description="Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL)",
+        description="Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL).",
     )
     change_comment: str | None = Field(None, description="Change comment")
     change_details: ChangeDetails | ChangeDetails1 = Field(
         ...,
         description="Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units).",
-        discriminator="kind",
+        discriminator="detail_type",
     )

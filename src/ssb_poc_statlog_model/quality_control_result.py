@@ -5,16 +5,22 @@ from __future__ import annotations
 
 from enum import Enum
 
-from pydantic import AwareDatetime, BaseModel, Field
+from pydantic import AwareDatetime, Field
+
+from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 
 
 class QualityControlResults(str, Enum):
+    """Quality control result: quality ok (0), quality issues detected (1), missing value detected (2)."""
+
     field_0 = "0"
     field_1 = "1"
     field_2 = "2"
 
 
-class QualityControlResult(BaseModel):
+class QualityControlResult(StatlogBaseModel):
+    """Schema for statistics quality control result."""
+
     statistics_name: str = Field(
         ..., description="Statistics shortname or statistics product name"
     )
@@ -33,7 +39,7 @@ class QualityControlResult(BaseModel):
     )
     quality_control_results: QualityControlResults = Field(
         ...,
-        description="Quality control result: quality ok (0), quality issues detected (1), missing value detected (2)",
+        description="Quality control result: quality ok (0), quality issues detected (1), missing value detected (2).",
     )
     quality_result_comment: str | None = Field(
         None, description="Quality control result comment."
