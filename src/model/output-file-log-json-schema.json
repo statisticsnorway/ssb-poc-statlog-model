@@ -1,0 +1,70 @@
+{
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/output-file-log/1.0.0",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Output file log",
+    "description": "Log schema for produced output files in a statistical production workflow.",
+    "allOf": [
+        {"$ref": "environment-metadata-json-schema.json"},
+        {
+            "type": "object",
+            "properties": {
+                "output_file_path": {
+                    "description": "Path or URI to the produced output file.",
+                    "type": "string"
+                },
+                "output_file_size_bytes": {
+                    "description": "Size of the produced output file in bytes.",
+                    "type": "integer"
+                },
+                "output_file_last_modified": {
+                    "description": "Last modified timestamp (date and time, ISO 8601) of the produced output file.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "input_file_paths": {
+                    "description": "Path or URI to one or more input files used to create the output file.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "step_logs": {
+                    "description": "Ordered list of step-log references that produced the output file.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "step_log_sha256": {
+                                "description": "SHA-256 of the referenced step log.",
+                                "type": "string"
+                            },
+                            "step_log_path": {
+                                "description": "Path or URI to the referenced step log file.",
+                                "type": "string"
+                            }
+                        },
+                        "required": ["step_log_sha256"]
+                    }
+                },
+                "log_sha256": {
+                    "description": "SHA-256 checksum of this log entry for immutability.",
+                    "type": ["string", "null"]
+                },
+                "hash_algorithm": {
+                    "description": "Hash algorithm used for *_sha256 fields.",
+                    "type": "string",
+                    "enum": [
+                        "sha256"
+                    ]
+                }
+            },
+            "required": [
+                "output_file_path",
+                "output_file_size_bytes",
+                "output_file_last_modified",
+                "step_logs",
+                "hash_algorithm"
+            ]
+        }
+    ]
+}

@@ -48,3 +48,7 @@ class QualityControlResult(StatlogBaseModel):
         None,
         description="Exception description. An error or warning occurred when executing the quality control routine.",
     )
+    log_sha256: str | None = Field(
+        None,
+        description="SHA-256 checksum of this quality control result log entry for immutability.",
+    )

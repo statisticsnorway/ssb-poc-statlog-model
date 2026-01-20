@@ -1,0 +1,47 @@
+{
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/environment-metadata/1.0.0",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Environment metadata",
+    "description": "Common metadata captured from the environment.",
+    "type": "object",
+    "properties": {
+        "log_created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp (date and time, ISO 8601) when the log entry was created."
+        },
+        "username": {
+            "type": "string",
+            "description": "Username of the actor or service creating the log entry."
+        },
+        "dapla_environment": {
+            "type": "string",
+            "description": "Dapla environment identifier."
+        },
+        "dapla_service": {
+            "type": "string",
+            "description": "Dapla service identifier."
+        },
+        "dapla_region": {
+            "type": "string",
+            "description": "Dapla region identifier."
+        },
+        "git_repo_name": {
+            "type": "string",
+            "description": "Git repository name."
+        },
+        "git_commit_sha": {
+            "type": "string",
+            "description": "SHA of the last available git commit."
+        }
+    },
+    "required": [
+        "log_created_at",
+        "username",
+        "dapla_environment",
+        "dapla_service",
+        "dapla_region",
+        "git_repo_name",
+        "git_commit_sha"
+    ]
+}

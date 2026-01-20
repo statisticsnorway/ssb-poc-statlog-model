@@ -1,0 +1,58 @@
+{
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/release-log/1.0.0",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Release log",
+    "description": "Log schema for releases of produced output files.",
+    "allOf": [
+        {"$ref": "environment-metadata-json-schema.json"},
+        {
+            "type": "object",
+            "properties": {
+                "release_comment": {
+                    "description": "Reason or context for why the release exists.",
+                    "type": "string"
+                },
+                "publication_datetime": {
+                    "description": "Publication time (date and time, ISO 8601) when the output becomes public.",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "output_file_logs": {
+                    "description": "References to output-file logs included in the release.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "output_file_log_sha256": {
+                                "description": "SHA-256 of the referenced output-file log.",
+                                "type": "string"
+                            },
+                            "output_file_log_path": {
+                                "description": "Path or URI to the referenced output-file log file.",
+                                "type": "string"
+                            }
+                        },
+                        "required": ["output_file_log_sha256"]
+                    }
+                },
+                "log_sha256": {
+                    "description": "SHA-256 checksum of this log entry for immutability.",
+                    "type": ["string", "null"]
+                },
+                "hash_algorithm": {
+                    "description": "Hash algorithm used for *_sha256 fields.",
+                    "type": "string",
+                    "enum": [
+                        "sha256"
+                    ]
+                }
+            },
+            "required": [
+                "release_comment",
+                "publication_datetime",
+                "output_file_logs",
+                "hash_algorithm"
+            ]
+        }
+    ]
+}

@@ -161,6 +161,10 @@
                     "additionalProperties": false
                 }
             ]
+        },
+        "log_sha256": {
+            "description": "SHA-256 checksum of this change-data log entry for immutability.",
+            "type": ["string", "null"]
         }
     },
     "required": [

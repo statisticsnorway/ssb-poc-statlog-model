@@ -46,6 +46,10 @@
         "quality_control_run_exception": {
             "description": "Exception description. An error or warning occurred when executing the quality control routine.",
             "type": "string"
+        },
+        "log_sha256": {
+            "description": "SHA-256 checksum of this quality control result log entry for immutability.",
+            "type": ["string", "null"]
         }
     },
     "required": [

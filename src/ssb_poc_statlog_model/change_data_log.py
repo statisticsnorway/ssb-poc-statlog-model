@@ -156,3 +156,7 @@ class ChangeDataLog(StatlogBaseModel):
         description="Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units).",
         discriminator="detail_type",
     )
+    log_sha256: str | None = Field(
+        None,
+        description="SHA-256 checksum of this change-data log entry for immutability.",
+    )

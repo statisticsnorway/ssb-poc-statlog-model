@@ -1,0 +1,81 @@
+{
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/step-log/1.0.0",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Step log",
+    "description": "Log schema for process steps in a statistical production workflow.",
+    "allOf": [
+        {"$ref": "environment-metadata-json-schema.json"},
+        {
+            "type": "object",
+            "properties": {
+                "step_name": {
+                    "description": "Name or identifier of the process step.",
+                    "type": "string"
+                },
+                "step_description": {
+                    "description": "Short description of the process step.",
+                    "type": "string"
+                },
+                "input_file_paths": {
+                    "description": "Path or URI to one or more input files for the step.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "quality_control_logs": {
+                    "description": "References to quality control logs produced for the step.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "log_sha256": {
+                                "description": "SHA-256 of the referenced quality control log.",
+                                "type": "string"
+                            },
+                            "log_path": {
+                                "description": "Path or URI to the referenced quality control log file.",
+                                "type": "string"
+                            }
+                        },
+                        "required": ["log_sha256"]
+                    }
+                },
+                "change_data_logs": {
+                    "description": "References to change-data logs produced for the step.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "log_sha256": {
+                                "description": "SHA-256 of the referenced change-data log.",
+                                "type": "string"
+                            },
+                            "log_path": {
+                                "description": "Path or URI to the referenced change-data log file.",
+                                "type": "string"
+                            }
+                        },
+                        "required": ["log_sha256"]
+                    }
+                },
+                "step_log_sha256": {
+                    "description": "SHA-256 checksum of this step log entry for immutability.",
+                    "type": ["string", "null"]
+                },
+                "hash_algorithm": {
+                    "description": "Hash algorithm used for *_sha256 fields.",
+                    "type": "string",
+                    "enum": [
+                        "sha256"
+                    ]
+                }
+            },
+            "required": [
+                "step_name",
+                "input_file_paths",
+                "hash_algorithm"
+            ]
+        }
+    ]
+}
