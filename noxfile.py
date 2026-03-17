@@ -10,7 +10,6 @@ from textwrap import dedent
 
 import nox
 
-
 try:
     from nox_poetry import Session
     from nox_poetry import session
@@ -24,8 +23,8 @@ except ImportError:
     raise SystemExit(dedent(message)) from None
 
 package = "ssb_poc_statlog_model"
-python_versions = ["3.11", "3.12", "3.13"]
-python_versions_for_test = python_versions + ["3.10"]
+python_versions = ["3.13", "3.12", "3.14"]
+python_versions_for_test = python_versions
 nox.needs_version = ">= 2025.2.9"
 nox.options.sessions = (
     "pre-commit",
@@ -40,7 +39,7 @@ nox.options.sessions = (
 def install_poetry_groups(session: Session, *groups: str) -> None:
     """Install dependencies from poetry groups, pinned to poetry.lock
 
-    Using this as s workaround until this PR is merged in:
+    Using this as a workaround until this PR is merged in:
     https://github.com/cjolowicz/nox-poetry/pull/1080
     """
     with tempfile.TemporaryDirectory() as tempdir:
