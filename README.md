@@ -88,7 +88,7 @@ UTC) to satisfy Pydantic’s `AwareDatetime` requirement used in several models.
 ## Project structure
 
 - `src/model` → JSON Schemas for the domain models (source of truth)
-  - `example_log_change_data/*.json` → Example payloads used in tests
+  - `example_logs/*.json` → Example payloads used in tests
 - `src/ssb_poc_statlog_model` → Generated Pydantic models (Python)
 - `tests` → Pytest suite validating models and examples
 
