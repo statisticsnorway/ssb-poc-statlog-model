@@ -20,7 +20,7 @@ documentation = "https://statisticsnorway.github.io/ssb-poc-statlog-model"
 Changelog = "https://github.com/statisticsnorway/ssb-poc-statlog-model/releases"
 
 [project.scripts]
-generate-ssb-models = "ssb_poc_statlog_model.generate_python:main"
+generate-ssb-models = "ssb_poc_statlog_model.generate_pydantic_models:main"
 
 [dependency-groups]
 lint = [

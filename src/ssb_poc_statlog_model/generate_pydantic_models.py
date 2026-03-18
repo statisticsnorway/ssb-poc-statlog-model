@@ -3,15 +3,15 @@ r"""CLI to generate Pydantic v2 models from JSON Schema files in src/model.
 Usage examples (run inside the Poetry environment):
 
   # Generate models for all *-json-schema.json files in src/model → src/ssb_poc_statlog_model
-  poetry run python -m ssb_poc_statlog_model.generate_python
+  poetry run python -m ssb_poc_statlog_model.generate_pydantic_models
 
   # Be explicit about directories
-  poetry run python -m ssb_poc_statlog_model.generate_python \
+  poetry run python -m ssb_poc_statlog_model.generate_pydantic_models \
       --schemas-dir src\model \
       --out-dir src\ssb_poc_statlog_model
 
   # Only (re)generate a single specific schema file
-  poetry run python -m ssb_poc_statlog_model.generate_python \
+  poetry run python -m ssb_poc_statlog_model.generate_pydantic_models \
       --schemas src\model\change-data-log-json-schema.json
 
 This script shells out to the module `datamodel_code_generator` via the same
@@ -168,7 +168,7 @@ def main(
     """Generate Pydantic v2 models from JSON Schemas using datamodel-codegen.
 
     Run this command via Poetry, e.g.:
-      poetry run python -m ssb_poc_statlog_model.generate_python
+      poetry run python -m ssb_poc_statlog_model.generate_pydantic_models
     """
     targets = _discover_schemas(schemas_dir, schemas)
     if not targets:
