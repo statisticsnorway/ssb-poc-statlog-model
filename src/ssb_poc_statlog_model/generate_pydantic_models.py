@@ -31,6 +31,12 @@ import click
 def _derive_output_filename(schema_path: Path) -> str:
     """Derive a Python file name from a schema file name.
 
+    Args:
+        schema_path: Path to the schema file.
+
+    Returns:
+        The python output filename.
+
     Examples:
       - change-data-log-json-schema.json → change_data_log.py
       - quality-control-result-json-schema.json → quality_control_result.py
@@ -72,10 +78,14 @@ def _run_codegen(
         "--use-standard-collections",
         "--use-double-quotes",
         "--use-union-operator",
+        "--use-annotated",
         "--disable-timestamp",
         "--use-schema-description",
         "--target-python-version",
-        "3.10",
+        "3.13",
+        "--formatters",
+        "ruff-format",
+        "ruff-check",
         "--output",
         str(output_file),
     ]

@@ -1,5 +1,4 @@
-import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from ssb_poc_statlog_model.change_data_log import (
@@ -9,7 +8,7 @@ from ssb_poc_statlog_model.change_data_log import (
 from ssb_poc_statlog_model.linage import Linage
 from ssb_poc_statlog_model.release import Release
 
-OUTPUT_DIR = Path(__file__).parent.parent / "src" / "model" / "example_logs"
+OUTPUT_DIR = Path(__file__).parent.parent.parent / "src" / "model" / "example_logs"
 
 change = ChangeDataLog(
     statistics_name="arblonn",
@@ -20,7 +19,7 @@ change = ChangeDataLog(
     data_period="2023-12",
     change_event="A",
     change_event_reason="OTHER_SOURCE",
-    change_datetime=datetime(2024, 1, 10, 15, 0, tzinfo=timezone.utc),
+    change_datetime=datetime(2024, 1, 10, 15, 0, tzinfo=UTC),
     changed_by="user@example.com",
     data_change_type=DataChangeType.NEW,
     change_comment="Opprettet ny enhet (person) fra ny datakilde ...",

@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+from typing import Annotated
+
 from pydantic import Field
 
 from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
@@ -11,16 +13,22 @@ from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 class Release(StatlogBaseModel):
     """Data model for a release in a statistical production process."""
 
-    statistics_name: str | None = Field(
-        None, description="Statistics shortname or statistics product name"
-    )
-    git_tag: str = Field(..., description="Git tag for the release.")
-    git_commit_hash: str = Field(..., description="Git commit hash for the release.")
-    data_source: list[str] = Field(
-        ...,
-        description="Reference or filepath to one or more datasets in the final data state (utdata or klargjorte-data) used as data source for the release.",
-    )
-    daplalab_image: str | None = Field(
-        None,
-        description="The tag of the Daplalab container image that produced the release.",
-    )
+    statistics_name: Annotated[
+        str | None, Field(description="Statistics shortname or statistics product name")
+    ] = None
+    git_tag: Annotated[str, Field(description="Git tag for the release.")]
+    git_commit_hash: Annotated[
+        str, Field(description="Git commit hash for the release.")
+    ]
+    data_source: Annotated[
+        list[str],
+        Field(
+            description="Reference or filepath to one or more datasets in the final data state (utdata or klargjorte-data) used as data source for the release."
+        ),
+    ]
+    daplalab_image: Annotated[
+        str | None,
+        Field(
+            description="The tag of the Daplalab container image that produced the release."
+        ),
+    ] = None

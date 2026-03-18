@@ -3,15 +3,15 @@
 
 from __future__ import annotations
 
-from enum import Enum
-from typing import Literal
+from enum import StrEnum
+from typing import Annotated, Literal
 
 from pydantic import AwareDatetime, ConfigDict, Field
 
 from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 
 
-class ChangeEvent(str, Enum):
+class ChangeEvent(StrEnum):
     """How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT)."""
 
     A = "A"
@@ -20,7 +20,7 @@ class ChangeEvent(str, Enum):
     NOT = "NOT"
 
 
-class ChangeEventReason(str, Enum):
+class ChangeEventReason(StrEnum):
     """Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER)."""
 
     OTHER_SOURCE = "OTHER_SOURCE"
@@ -31,7 +31,7 @@ class ChangeEventReason(str, Enum):
     OTHER = "OTHER"
 
 
-class DataChangeType(str, Enum):
+class DataChangeType(StrEnum):
     """Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL)."""
 
     NEW = "NEW"
@@ -45,30 +45,36 @@ class ChangeDetails(StatlogBaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    detail_type: Literal["rows"] = Field(
-        "rows", description="Discriminator for change_details variant"
-    )
-    rows_affected: int = Field(
-        ...,
-        description="Number of rows affected if the process changed multiple rows (units).",
-    )
-    variable_name: str | None = Field(
-        None,
-        description="The variable name (or element-path) that contains data changes.",
-    )
+    detail_type: Annotated[
+        Literal["rows"], Field(description="Discriminator for change_details variant")
+    ] = "rows"
+    rows_affected: Annotated[
+        int,
+        Field(
+            description="Number of rows affected if the process changed multiple rows (units)."
+        ),
+    ]
+    variable_name: Annotated[
+        str | None,
+        Field(
+            description="The variable name (or element-path) that contains data changes."
+        ),
+    ] = None
 
 
 class UnitIdItem(StatlogBaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    unit_id_variable: str = Field(
-        ...,
-        description="The unit-id variable name, e.g. 'fnr', 'pers_id', 'reg_nr' or 'komm_nr'.",
-    )
-    unit_id_value: str = Field(
-        ..., description="The unit-id value, e.g. '311280nnnnn' or '123456789'."
-    )
+    unit_id_variable: Annotated[
+        str,
+        Field(
+            description="The unit-id variable name, e.g. 'fnr', 'pers_id', 'reg_nr' or 'komm_nr'."
+        ),
+    ]
+    unit_id_value: Annotated[
+        str, Field(description="The unit-id value, e.g. '311280nnnnn' or '123456789'.")
+    ]
 
 
 class OldValueItem(StatlogBaseModel):
@@ -93,66 +99,90 @@ class ChangeDetails1(StatlogBaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    detail_type: Literal["unit"] = Field(
-        "unit", description="Discriminator for change_details variant"
-    )
-    unit_id: list[UnitIdItem] = Field(
-        ...,
-        description="One or more unit-identifier variables and values (primary key) if one row (unit) was affected, eg. 'fnr'='311280nnnnn' and 'orgnr'='123456789'.",
-    )
-    old_value: list[OldValueItem] | None = Field(
-        None,
-        description="Old value(s). If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'address'='Street 123', ...",
-    )
-    new_value: list[NewValueItem] | None = Field(
-        None,
-        description="New value(s). If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'address'='Street 123', ...",
-    )
+    detail_type: Annotated[
+        Literal["unit"], Field(description="Discriminator for change_details variant")
+    ] = "unit"
+    unit_id: Annotated[
+        list[UnitIdItem],
+        Field(
+            description="One or more unit-identifier variables and values (primary key) if one row (unit) was affected, eg. 'fnr'='311280nnnnn' and 'orgnr'='123456789'."
+        ),
+    ]
+    old_value: Annotated[
+        list[OldValueItem] | None,
+        Field(
+            description="Old value(s). If delete (data_change_type = DEL) - log all deleted variable-values from the deleted data row/record, eg. 'income'='1000', 'address'='Street 123', ..."
+        ),
+    ] = None
+    new_value: Annotated[
+        list[NewValueItem] | None,
+        Field(
+            description="New value(s). If insert (data_change_type = INS) - log all inserted variable-values in the data row/record, eg. 'income'='1000', 'address'='Street 123', ..."
+        ),
+    ] = None
 
 
 class ChangeDataLog(StatlogBaseModel):
     """Data model for data change log in a statistical production process."""
 
-    statistics_name: str = Field(
-        ..., description="Statistics shortname or statistics product name"
-    )
-    data_source: list[str] = Field(
-        ...,
-        description="Reference or filepath to one or more input datasets used as data source before changing data.",
-    )
-    data_target: str = Field(
-        ..., description="Target dataset filepath (eg. GCS-path to a parquet file)."
-    )
-    data_period: str = Field(
-        ...,
-        description="Data period for changed data - eg. a year, quarter, month, day (date), ...",
-    )
-    variable_name: str | None = Field(
-        None,
-        description="The variable name (or element-path) that contains data changes.",
-    )
-    change_event: ChangeEvent = Field(
-        ...,
-        description="How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT).",
-    )
-    change_event_reason: ChangeEventReason | None = Field(
-        None,
-        description="Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER).",
-    )
-    change_datetime: AwareDatetime = Field(
-        ..., description="Timestamp (date and time, ISO 8601) of an event or change"
-    )
-    changed_by: str = Field(
-        ...,
-        description="If manually (M): user name of the person who triggered an event; if automatically (A) name of method, function and/or process.",
-    )
-    data_change_type: DataChangeType | None = Field(
-        None,
-        description="Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL).",
-    )
-    change_comment: str | None = Field(None, description="Change comment")
-    change_details: ChangeDetails | ChangeDetails1 = Field(
-        ...,
-        description="Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units).",
-        discriminator="detail_type",
-    )
+    statistics_name: Annotated[
+        str, Field(description="Statistics shortname or statistics product name")
+    ]
+    data_source: Annotated[
+        list[str],
+        Field(
+            description="Reference or filepath to one or more input datasets used as data source before changing data."
+        ),
+    ]
+    data_target: Annotated[
+        str,
+        Field(description="Target dataset filepath (eg. GCS-path to a parquet file)."),
+    ]
+    data_period: Annotated[
+        str,
+        Field(
+            description="Data period for changed data - eg. a year, quarter, month, day (date), ..."
+        ),
+    ]
+    variable_name: Annotated[
+        str | None,
+        Field(
+            description="The variable name (or element-path) that contains data changes."
+        ),
+    ] = None
+    change_event: Annotated[
+        ChangeEvent,
+        Field(
+            description="How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT)."
+        ),
+    ]
+    change_event_reason: Annotated[
+        ChangeEventReason | None,
+        Field(
+            description="Reason for change or approval: Other source (OTHER_SOURCE), Statistical review (REVIEW), Information from the data provider/registry owner (OWNER), Small/marginal unit (MARGINAL_UNIT), Data duplicate (DUPLICATE), Other reason (OTHER)."
+        ),
+    ] = None
+    change_datetime: Annotated[
+        AwareDatetime,
+        Field(description="Timestamp (date and time, ISO 8601) of an event or change"),
+    ]
+    changed_by: Annotated[
+        str,
+        Field(
+            description="If manually (M): user name of the person who triggered an event; if automatically (A) name of method, function and/or process."
+        ),
+    ]
+    data_change_type: Annotated[
+        DataChangeType | None,
+        Field(
+            description="Data change type: Updated value (UPD), created new unit/row (NEW), or deleted unit/row (DEL)."
+        ),
+    ] = None
+    change_comment: Annotated[str | None, Field(description="Change comment")] = None
+    change_details: Annotated[
+        ChangeDetails | ChangeDetails1,
+        Field(
+            description="Detailed information about the change. Either a unit-id, old and new value if one row (unit) was affected, or number of rows affected if the process changed multiple rows (units).",
+            discriminator="detail_type",
+        ),
+    ]

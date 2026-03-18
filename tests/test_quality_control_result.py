@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import pytest
@@ -18,9 +18,7 @@ def _valid_payload(result_value: QualityControlResults) -> dict[str, Any]:
             "gs://bucket/path/input.parquet",
         ],
         "data_period": "2023-12",
-        "quality_control_datetime": datetime(
-            2024, 1, 10, 15, 0, 0, tzinfo=timezone.utc
-        ),
+        "quality_control_datetime": datetime(2024, 1, 10, 15, 0, 0, tzinfo=UTC),
         "quality_control_results": result_value,
         "quality_result_comment": "All good",
     }

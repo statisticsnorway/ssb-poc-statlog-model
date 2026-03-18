@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+from typing import Annotated
+
 from pydantic import Field
 
 from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
@@ -11,19 +13,27 @@ from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 class Linage(StatlogBaseModel):
     """Data model for data linage in a statistical production process."""
 
-    data_source: list[str] = Field(
-        ...,
-        description="Reference or filepath to one or more input datasets used as data source.",
-    )
-    data_target: list[str] = Field(
-        ...,
-        description="Reference or filepath to one or more target datasets (where data is stored after the process has been run).",
-    )
-    step: str | None = Field(
-        None,
-        description="A string describing at which step in the process the log is for.",
-    )
-    file_hash: list[str] | None = Field(
-        None,
-        description="List of SHA-256 hashes, matching the files in the data_sources field.",
-    )
+    data_source: Annotated[
+        list[str],
+        Field(
+            description="Reference or filepath to one or more input datasets used as data source."
+        ),
+    ]
+    data_target: Annotated[
+        list[str],
+        Field(
+            description="Reference or filepath to one or more target datasets (where data is stored after the process has been run)."
+        ),
+    ]
+    step: Annotated[
+        str | None,
+        Field(
+            description="A string describing at which step in the process the log is for."
+        ),
+    ] = None
+    file_hash: Annotated[
+        list[str] | None,
+        Field(
+            description="List of SHA-256 hashes, matching the files in the data_sources field."
+        ),
+    ] = None

@@ -24,7 +24,6 @@ generate-ssb-models = "ssb_poc_statlog_model.generate_pydantic_models:main"
 
 [dependency-groups]
 lint = [
-    "black[jupyter]>=25.11.0",
     "pre-commit>=4.4.0",
     "pre-commit-hooks>=6.0.0",
     "pydoclint>=0.8.3",
@@ -112,6 +111,9 @@ extend-exclude = [
     "docs/conf.py",
 ]
 
+[tools.ruff.format]
+
+
 # Ruff rules may be customized as desired: https://docs.astral.sh/ruff/rules/
 [tool.ruff.lint]
 select = [
@@ -135,8 +137,16 @@ ignore = [
     "FBT001", # Allow boolean positional arguments in a function.
     "FBT002", # Allow boolean default positional arguments in a function.
     "E402",   # Supress module-import-not-at-top-of-file, needed in jupyter notebooks.
-    "E501",   # Supress line-too-long warnings: trust black's judgement on this one.
+    "E501",   # Supress line-too-long warnings: trust ruff's judgement on this one.
     "PLR2004", # Allow to compare with unnamed numerical constants.
+
+    # Disable rules conflicting with ruff as a formatter,
+    # see https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+    "E111",
+    "E114",
+    "E117",
+    "D206",
+    "D300",
 ]
 extend-safe-fixes = ["D200"]  # Consider converting docstring to one line safe.
 external = ["DOC"]  # Avoiding removing any codes starting with `DOC` from any `# noqa` directives.

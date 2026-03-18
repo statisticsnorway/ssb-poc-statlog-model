@@ -62,15 +62,13 @@ repos:
         entry: pydoclint
         language: system
         types: [python]
-      - id: ruff
-        name: ruff
+      - id: ruff-check
+        name: ruff check
         entry: ruff check --fix --exit-non-zero-on-fix
         language: system
-        types_or: [python, jupyter]
-        require_serial: true
-      - id: black
-        name: black
-        entry: black
+        types: [python]
+      - id: ruff-format
+        name: ruff format
+        entry: ruff format
         language: system
-        types_or: [python, jupyter]
-        require_serial: true
+        types: [python]
