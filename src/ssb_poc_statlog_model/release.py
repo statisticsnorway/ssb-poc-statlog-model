@@ -16,9 +16,12 @@ class Release(StatlogBaseModel):
     schema_version: Annotated[
         Literal["1.0.0"], Field(description="Version of this schema.")
     ] = "1.0.0"
+    dapla_team: Annotated[
+        str, Field(description="Name of the dapla team that produced the release.")
+    ]
     statistics_name: Annotated[
-        str | None, Field(description="Statistics shortname or statistics product name")
-    ] = None
+        str, Field(description="Statistics shortname or statistics product name")
+    ]
     git_tag: Annotated[str, Field(description="Git tag for the release.")]
     git_commit_hash: Annotated[
         str, Field(description="Git commit hash for the release.")

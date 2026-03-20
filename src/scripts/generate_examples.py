@@ -42,6 +42,7 @@ change_file = OUTPUT_DIR / "example_change_data_log.json"
 change_file.write_text(change.model_dump_json(indent=2))
 
 release = Release(
+    dapla_team="tip-tutorials",
     statistics_name="metstat",
     git_tag="2025.12",
     git_commit_hash="5faec80b4746112ef9df340cbaf779bff0a00a7f",

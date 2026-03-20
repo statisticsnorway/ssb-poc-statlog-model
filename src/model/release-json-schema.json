@@ -10,6 +10,10 @@
             "type": "string",
             "const": "1.0.0"
         },
+        "dapla_team": {
+            "description": "Name of the dapla team that produced the release.",
+            "type": "string"
+        },
         "statistics_name": {
             "description": "Statistics shortname or statistics product name",
             "type": "string"
@@ -37,6 +41,8 @@
     },
     "required": [
         "schema_version",
+        "dapla_team",
+        "statistics_name",
         "git_tag",
         "git_commit_hash",
         "data_source",
