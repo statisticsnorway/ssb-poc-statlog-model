@@ -5,6 +5,11 @@
     "description": "Data model for data linage in a statistical production process.",
     "type": "object",
     "properties": {
+        "schema_version": {
+            "description": "Version of this schema.",
+            "type": "string",
+            "const": "1.0.0"
+        },
         "data_source": {
             "description": "Reference or filepath to one or more input datasets used as data source.",
             "$comment": "Dataset filepath (eg. GCS-path to a parquet file).",
@@ -34,6 +39,7 @@
         }
     },
     "required": [
+        "schema_version",
         "data_source",
         "data_target"
     ]

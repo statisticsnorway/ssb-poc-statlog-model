@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from enum import StrEnum
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import Field
 
@@ -26,6 +26,9 @@ class Variable(StatlogBaseModel):
 class QualityControlDescription(StatlogBaseModel):
     """Model for description of quality controls used in a statistical production."""
 
+    schema_version: Annotated[
+        Literal["2.0.0"], Field(description="Version of this schema.")
+    ] = "2.0.0"
     quality_control_id: Annotated[str, Field(description="A unique quality control ID")]
     quality_control_description: Annotated[
         str, Field(description="Quality control description")

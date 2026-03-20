@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import Field
 
@@ -13,6 +13,9 @@ from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 class Linage(StatlogBaseModel):
     """Data model for data linage in a statistical production process."""
 
+    schema_version: Annotated[
+        Literal["1.0.0"], Field(description="Version of this schema.")
+    ] = "1.0.0"
     data_source: Annotated[
         list[str],
         Field(

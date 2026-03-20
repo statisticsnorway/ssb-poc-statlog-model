@@ -5,6 +5,11 @@
     "description": "Data model for a release in a statistical production process.",
     "type": "object",
     "properties": {
+        "schema_version": {
+            "description": "Version of this schema.",
+            "type": "string",
+            "const": "1.0.0"
+        },
         "statistics_name": {
             "description": "Statistics shortname or statistics product name",
             "type": "string"
@@ -31,6 +36,7 @@
         }
     },
     "required": [
+        "schema_version",
         "git_tag",
         "git_commit_hash",
         "data_source",

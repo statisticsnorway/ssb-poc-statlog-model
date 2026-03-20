@@ -1,10 +1,15 @@
 {
-    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/change-data-log/1.0.0",
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/change-data-log/2.0.0",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Change data log",
     "description": "Data model for data change log in a statistical production process.",
     "type": "object",
     "properties": {
+        "schema_version": {
+            "description": "Version of this schema.",
+            "type": "string",
+            "const": "2.0.0"
+        },
         "statistics_name": {
             "description": "Statistics shortname or statistics product name",
             "type": "string"
@@ -164,6 +169,7 @@
         }
     },
     "required": [
+        "schema_version",
         "statistics_name",
         "data_source",
         "data_target",

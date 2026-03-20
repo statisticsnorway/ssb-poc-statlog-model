@@ -125,6 +125,9 @@ class ChangeDetails1(StatlogBaseModel):
 class ChangeDataLog(StatlogBaseModel):
     """Data model for data change log in a statistical production process."""
 
+    schema_version: Annotated[
+        Literal["2.0.0"], Field(description="Version of this schema.")
+    ] = "2.0.0"
     statistics_name: Annotated[
         str, Field(description="Statistics shortname or statistics product name")
     ]

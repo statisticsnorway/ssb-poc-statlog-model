@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from enum import StrEnum
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import AwareDatetime, Field
 
@@ -22,6 +22,9 @@ class QualityControlResults(StrEnum):
 class QualityControlResult(StatlogBaseModel):
     """Schema for statistics quality control result."""
 
+    schema_version: Annotated[
+        Literal["2.0.0"], Field(description="Version of this schema.")
+    ] = "2.0.0"
     statistics_name: Annotated[
         str, Field(description="Statistics shortname or statistics product name")
     ]
