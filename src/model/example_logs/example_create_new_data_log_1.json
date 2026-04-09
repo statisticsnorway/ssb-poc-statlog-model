@@ -7,7 +7,6 @@
     ],
     "data_target": "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
     "data_period": "2023-12",
-    "variable_name": null,
     "change_event": "A",
     "change_event_reason": "OTHER_SOURCE",
     "change_datetime": "2024-01-10T15:00:00.000Z",

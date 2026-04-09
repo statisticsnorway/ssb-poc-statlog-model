@@ -55,11 +55,11 @@ class ChangeDetails(StatlogBaseModel):
         ),
     ]
     variable_name: Annotated[
-        str | None,
+        str,
         Field(
             description="The variable name (or element-path) that contains data changes."
         ),
-    ] = None
+    ]
 
 
 class UnitIdItem(StatlogBaseModel):
@@ -147,12 +147,6 @@ class ChangeDataLog(StatlogBaseModel):
             description="Data period for changed data - eg. a year, quarter, month, day (date), ..."
         ),
     ]
-    variable_name: Annotated[
-        str | None,
-        Field(
-            description="The variable name (or element-path) that contains data changes."
-        ),
-    ] = None
     change_event: Annotated[
         ChangeEvent,
         Field(

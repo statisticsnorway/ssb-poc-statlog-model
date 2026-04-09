@@ -31,11 +31,6 @@
             "description": "Data period for changed data - eg. a year, quarter, month, day (date), ...",
             "type": "string"
         },
-        "variable_name": {
-            "description": "The variable name (or element-path) that contains data changes.",
-            "$comment": "The variable short name (eg. 'income' or 'address') or element path for hierarchical data (eg. 'person.address.street' or 'person.income')",
-            "type": "string"
-        },
         "change_event": {
             "description": "How the event was triggered: Automatically changed (A), Manually changed (M), Manually approved with no change (MNC), Not reviewed (NOT).",
             "type": "string",
@@ -107,7 +102,7 @@
                             "type": "string"
                         }
                     },
-                    "required": ["detail_type", "rows_affected"],
+                    "required": ["detail_type", "rows_affected", "variable_name"],
                     "additionalProperties": false
                 },
                 {
