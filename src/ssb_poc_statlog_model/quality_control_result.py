@@ -3,14 +3,15 @@
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
+from typing import Annotated, Literal
 
 from pydantic import AwareDatetime, Field
 
 from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 
 
-class QualityControlResults(str, Enum):
+class QualityControlResults(StrEnum):
     """Quality control result: quality ok (0), quality issues detected (1), missing value detected (2)."""
 
     field_0 = "0"
@@ -21,30 +22,44 @@ class QualityControlResults(str, Enum):
 class QualityControlResult(StatlogBaseModel):
     """Schema for statistics quality control result."""
 
-    statistics_name: str = Field(
-        ..., description="Statistics shortname or statistics product name"
-    )
-    quality_control_id: str = Field(
-        ..., description="A reference (or link/uri) to the quality control description"
-    )
-    data_location: list[str] = Field(
-        ...,
-        description="Controlled dataset reference/filepath (eg. GCS-path to a parquet file) or other dataset reference (eg. ref. to a CloudSQL database table).",
-    )
-    data_period: str = Field(
-        ..., description="Data period controlled - eg. year, date, date-time, ..."
-    )
-    quality_control_datetime: AwareDatetime = Field(
-        ..., description="Quality control datetime (date and time, ISO 8601)"
-    )
-    quality_control_results: QualityControlResults = Field(
-        ...,
-        description="Quality control result: quality ok (0), quality issues detected (1), missing value detected (2).",
-    )
-    quality_result_comment: str | None = Field(
-        None, description="Quality control result comment."
-    )
-    quality_control_run_exception: str | None = Field(
-        None,
-        description="Exception description. An error or warning occurred when executing the quality control routine.",
-    )
+    schema_version: Annotated[
+        Literal["2.0.0"], Field(description="Version of this schema.")
+    ] = "2.0.0"
+    statistics_name: Annotated[
+        str, Field(description="Statistics shortname or statistics product name")
+    ]
+    quality_control_id: Annotated[
+        str,
+        Field(
+            description="A reference (or link/uri) to the quality control description"
+        ),
+    ]
+    data_location: Annotated[
+        list[str],
+        Field(
+            description="Controlled dataset reference/filepath (eg. GCS-path to a parquet file) or other dataset reference (eg. ref. to a CloudSQL database table)."
+        ),
+    ]
+    data_period: Annotated[
+        str,
+        Field(description="Data period controlled - eg. year, date, date-time, ..."),
+    ]
+    quality_control_datetime: Annotated[
+        AwareDatetime,
+        Field(description="Quality control datetime (date and time, ISO 8601)"),
+    ]
+    quality_control_results: Annotated[
+        QualityControlResults,
+        Field(
+            description="Quality control result: quality ok (0), quality issues detected (1), missing value detected (2)."
+        ),
+    ]
+    quality_result_comment: Annotated[
+        str | None, Field(description="Quality control result comment.")
+    ] = None
+    quality_control_run_exception: Annotated[
+        str | None,
+        Field(
+            description="Exception description. An error or warning occurred when executing the quality control routine."
+        ),
+    ] = None

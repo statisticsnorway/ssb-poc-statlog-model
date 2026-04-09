@@ -1,0 +1,52 @@
+{
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/release/1.0.0",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Release",
+    "description": "Data model for a release in a statistical production process.",
+    "type": "object",
+    "properties": {
+        "schema_version": {
+            "description": "Version of this schema.",
+            "type": "string",
+            "const": "1.0.0"
+        },
+        "dapla_team": {
+            "description": "Name of the dapla team that produced the release.",
+            "type": "string"
+        },
+        "statistics_name": {
+            "description": "Statistics shortname or statistics product name",
+            "type": "string"
+        },
+        "git_tag": {
+            "description": "Git tag for the release.",
+            "type": "string"
+        },
+        "git_commit_hash": {
+            "description": "Git commit hash for the release.",
+            "type": "string"
+        },
+        "data_source": {
+            "description": "Reference or filepath to one or more datasets in the final data state (utdata or klargjorte-data) used as data source for the release.",
+            "$comment": "Dataset filepath (eg. GCS-path to a parquet file).",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "daplalab_image": {
+            "description": "The tag of the Daplalab container image that produced the release.",
+            "type": "string"
+        }
+    },
+    "required": [
+        "schema_version",
+        "dapla_team",
+        "statistics_name",
+        "git_tag",
+        "git_commit_hash",
+        "data_source",
+        "daplalab_image_name",
+        "daplalab_image_tag"
+    ]
+}

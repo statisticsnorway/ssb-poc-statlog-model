@@ -24,6 +24,22 @@ ssb\_poc\_statlog\_model.change\_data\_log module
    :show-inheritance:
    :undoc-members:
 
+ssb\_poc\_statlog\_model.generate\_python module
+------------------------------------------------
+
+.. automodule:: ssb_poc_statlog_model.generate_python
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+ssb\_poc\_statlog\_model.linage module
+--------------------------------------
+
+.. automodule:: ssb_poc_statlog_model.linage
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 ssb\_poc\_statlog\_model.quality\_control\_description module
 -------------------------------------------------------------
 
@@ -36,6 +52,22 @@ ssb\_poc\_statlog\_model.quality\_control\_result module
 --------------------------------------------------------
 
 .. automodule:: ssb_poc_statlog_model.quality_control_result
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+ssb\_poc\_statlog\_model.release module
+---------------------------------------
+
+.. automodule:: ssb_poc_statlog_model.release
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+ssb\_poc\_statlog\_model.statlog\_base\_model module
+----------------------------------------------------
+
+.. automodule:: ssb_poc_statlog_model.statlog_base_model
    :members:
    :show-inheritance:
    :undoc-members:

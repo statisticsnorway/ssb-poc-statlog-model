@@ -3,15 +3,15 @@ r"""CLI to generate Pydantic v2 models from JSON Schema files in src/model.
 Usage examples (run inside the Poetry environment):
 
   # Generate models for all *-json-schema.json files in src/model → src/ssb_poc_statlog_model
-  poetry run python -m ssb_poc_statlog_model.generate_python
+  poetry run python -m ssb_poc_statlog_model.generate_pydantic_models
 
   # Be explicit about directories
-  poetry run python -m ssb_poc_statlog_model.generate_python \
+  poetry run python -m ssb_poc_statlog_model.generate_pydantic_models \
       --schemas-dir src\model \
       --out-dir src\ssb_poc_statlog_model
 
   # Only (re)generate a single specific schema file
-  poetry run python -m ssb_poc_statlog_model.generate_python \
+  poetry run python -m ssb_poc_statlog_model.generate_pydantic_models \
       --schemas src\model\change-data-log-json-schema.json
 
 This script shells out to the module `datamodel_code_generator` via the same
@@ -30,6 +30,12 @@ import click
 
 def _derive_output_filename(schema_path: Path) -> str:
     """Derive a Python file name from a schema file name.
+
+    Args:
+        schema_path: Path to the schema file.
+
+    Returns:
+        The python output filename.
 
     Examples:
       - change-data-log-json-schema.json → change_data_log.py
@@ -72,10 +78,14 @@ def _run_codegen(
         "--use-standard-collections",
         "--use-double-quotes",
         "--use-union-operator",
+        "--use-annotated",
         "--disable-timestamp",
         "--use-schema-description",
         "--target-python-version",
-        "3.10",
+        "3.13",
+        "--formatters",
+        "ruff-format",
+        "ruff-check",
         "--output",
         str(output_file),
     ]
@@ -168,7 +178,7 @@ def main(
     """Generate Pydantic v2 models from JSON Schemas using datamodel-codegen.
 
     Run this command via Poetry, e.g.:
-      poetry run python -m ssb_poc_statlog_model.generate_python
+      poetry run python -m ssb_poc_statlog_model.generate_pydantic_models
     """
     targets = _discover_schemas(schemas_dir, schemas)
     if not targets:

@@ -1,10 +1,15 @@
 {
-    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/quality-control-result/1.0.0",
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/quality-control-result/2.0.0",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Quality control result",
     "description": "Schema for statistics quality control result.",
     "type": "object",
     "properties": {
+        "schema_version": {
+            "description": "Version of this schema.",
+            "type": "string",
+            "const": "2.0.0"
+        },
         "statistics_name": {
             "description": "Statistics shortname or statistics product name",
             "type": "string"
@@ -49,6 +54,7 @@
         }
     },
     "required": [
+        "schema_version",
         "statistics_name",
         "quality_control_id",
         "data_location",

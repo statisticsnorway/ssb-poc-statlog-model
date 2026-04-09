@@ -6,7 +6,7 @@ authors = [{ name = "Arne Sørli", email = "arne.sorli@ssb.no" }]
 maintainers = [{ name = "Statistics Norway, IT-partner Department (703)" }]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.12"
 dynamic = ["classifiers"]
 dependencies = [
     "click>=8.0.1",
@@ -20,30 +20,30 @@ documentation = "https://statisticsnorway.github.io/ssb-poc-statlog-model"
 Changelog = "https://github.com/statisticsnorway/ssb-poc-statlog-model/releases"
 
 [project.scripts]
-generate-ssb-models = "ssb_poc_statlog_model.generate_python:main"
+generate-ssb-models = "ssb_poc_statlog_model.generate_pydantic_models:main"
 
 [dependency-groups]
 lint = [
-    "black[jupyter]>=25.11.0",
-    "darglint>=1.8.1",
     "pre-commit>=4.4.0",
     "pre-commit-hooks>=6.0.0",
+    "pydoclint>=0.8.3",
     "ruff>=0.14.5",
 ]
 doc = [
-    "furo>=2025.9.25; python_version >= '3.11'",
-    "myst-parser>=4.0.1; python_version >= '3.11'",
-    "sphinx>=8.2.3; python_version >= '3.11'",
-    "sphinx-autobuild>=2025.8.25; python_version >= '3.11'",
-    "sphinx-autodoc-typehints>=3.5.2; python_version >= '3.11'",
-    "sphinx-click>=6.1.0; python_version >= '3.11'",
+    "furo>=2025.9.25",
+    "myst-parser>=4.0.1",
+    "sphinx>=8.2.3",
+    "sphinx-autobuild>=2025.8.25",
+    "sphinx-autodoc-typehints>=3.5.2",
+    "sphinx-click>=6.1.0",
 ]
+
 # Type hint stubs should be placed in the dev dependency group
 dev = [
     {include-group = "lint"},
     {include-group = "doc"},
     "coverage[toml]>=7.11.3",
-    "deptry>=0.24.0",
+    "deptry>=0.24.0; python_version < '4.0'",
     "mypy[pydantic]>=1.18.2",
     "pygments>=2.19.0",
     "pytest>=9.0.0",
@@ -52,11 +52,12 @@ dev = [
     "datamodel-code-generator>=0.35.0",
     "jsonschema>=4.25.1",
     "types-jsonschema>=4.25.1.20251009",
+    "pytest-mock>=3.15.1",
 ]
 
 [tool.poetry]
 classifiers = ["Development Status :: 4 - Beta"]
-requires-poetry = ">=2.2"
+requires-poetry = ">=2.3"
 
 [tool.poetry.requires-plugins]
 poetry-plugin-export = ">=1.9"
@@ -88,11 +89,20 @@ show_column_numbers = true
 show_error_context = true
 plugins = ["pydantic.mypy"]
 
+[tool.pydoclint]
+style = "google"
+exclude = '\.git|\.nox'
+arg-type-hints-in-docstring = false
+check-return-types = false
+check-yield-types = false
+allow-init-docstring = true
+quiet = true
+
 [tool.ruff]
 force-exclude = true  # Apply excludes to pre-commit
 show-fixes = true
 src = ["src", "tests"]
-target-version = "py310"  # Minimum Python version supported
+target-version = "py313"  # Minimum Python version supported
 include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
 extend-exclude = [
     "__pycache__",
@@ -101,6 +111,9 @@ extend-exclude = [
     "noxfile.py",
     "docs/conf.py",
 ]
+
+[tools.ruff.format]
+
 
 # Ruff rules may be customized as desired: https://docs.astral.sh/ruff/rules/
 [tool.ruff.lint]
@@ -125,10 +138,19 @@ ignore = [
     "FBT001", # Allow boolean positional arguments in a function.
     "FBT002", # Allow boolean default positional arguments in a function.
     "E402",   # Supress module-import-not-at-top-of-file, needed in jupyter notebooks.
-    "E501",   # Supress line-too-long warnings: trust black's judgement on this one.
+    "E501",   # Supress line-too-long warnings: trust ruff's judgement on this one.
     "PLR2004", # Allow to compare with unnamed numerical constants.
+
+    # Disable rules conflicting with ruff as a formatter,
+    # see https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+    "E111",
+    "E114",
+    "E117",
+    "D206",
+    "D300",
 ]
 extend-safe-fixes = ["D200"]  # Consider converting docstring to one line safe.
+external = ["DOC"]  # Avoiding removing any codes starting with `DOC` from any `# noqa` directives.
 
 [tool.ruff.lint.isort]
 force-single-line = false

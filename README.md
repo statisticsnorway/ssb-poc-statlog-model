@@ -34,7 +34,7 @@ production run.
 
 ## Requirements
 
-- Python >= 3.10
+- Python >= 3.13
 
 ## Installation
 
@@ -88,9 +88,29 @@ UTC) to satisfy Pydantic’s `AwareDatetime` requirement used in several models.
 ## Project structure
 
 - `src/model` → JSON Schemas for the domain models (source of truth)
-  - `example_log_change_data/*.json` → Example payloads used in tests
+  - `example_logs/*.json` → Example payloads used in tests
 - `src/ssb_poc_statlog_model` → Generated Pydantic models (Python)
+- `src/scripts` → Scripts for generating examples from the pydantic models
 - `tests` → Pytest suite validating models and examples
+
+## Schema versioning
+
+The schema version is defined in the `schema_version` and `$id` field in the root
+of each schema. It uses semantic versioning (major.minor.patch) with the following rules:
+
+- **Major (breaking change)**:
+  - Field removed or renamed
+  - Field type changed
+  - Required field added
+- **Minor (backward compatible)**:
+  - New optional field added
+  - Enum extended
+- **Patch (non-structural change)**:
+  - Description changes
+
+
+
+
 
 ## Development
 

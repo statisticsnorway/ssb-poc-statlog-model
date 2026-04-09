@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "data_source": [
+    "gs://ssb-tip-tutorials-data-produkt-prod/metstat/inndata/observations_p2025-12-01_p2025-12-31_v1.parquet"
+  ],
+  "data_target": [
+    "gs://ssb-tip-tutorials-data-produkt-prod/metstat/klargjorte-data/observations_p2025-12-01_p2025-12-31_v1.parquet"
+  ],
+  "step": null,
+  "file_hash": null
+}

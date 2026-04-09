@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import pytest
@@ -23,7 +23,7 @@ def make_common_fields() -> dict[str, Any]:
         "data_period": "2023-12",
         "change_event": ChangeEvent.M,
         "change_event_reason": ChangeEventReason.REVIEW,
-        "change_datetime": datetime(2024, 1, 10, 15, 0, 0, tzinfo=timezone.utc),
+        "change_datetime": datetime(2024, 1, 10, 15, 0, 0, tzinfo=UTC),
         "changed_by": "user@example.com",
         "data_change_type": DataChangeType.UPD,
         "change_comment": "Some reason...",

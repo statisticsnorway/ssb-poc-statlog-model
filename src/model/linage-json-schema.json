@@ -1,0 +1,46 @@
+{
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/linage/1.0.0",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Linage",
+    "description": "Data model for data linage in a statistical production process.",
+    "type": "object",
+    "properties": {
+        "schema_version": {
+            "description": "Version of this schema.",
+            "type": "string",
+            "const": "1.0.0"
+        },
+        "data_source": {
+            "description": "Reference or filepath to one or more input datasets used as data source.",
+            "$comment": "Dataset filepath (eg. GCS-path to a parquet file).",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "data_target": {
+            "description": "Reference or filepath to one or more target datasets (where data is stored after the process has been run).",
+            "$comment": "Dataset filepath (eg. GCS-path to a parquet file).",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "step": {
+            "description": "A string describing at which step in the process the log is for.",
+            "type": "string"
+        },
+        "file_hash": {
+            "description": "List of SHA-256 hashes, matching the files in the data_sources field.",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "required": [
+        "schema_version",
+        "data_source",
+        "data_target"
+    ]
+}

@@ -1,9 +1,9 @@
 {
+    "schema_version": "2.0.0",
     "statistics_name": "familie",
     "data_source": ["gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2020-12_v1.parquet"],
     "data_target": "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2020-12_v1.parquet",
     "data_period": "2020-12-31",
-    "variable_name": "adresse.gateadresse",
     "change_event": "M",
     "change_event_reason": "REVIEW",
     "change_datetime": "2021-01-10T15:00:00.000Z",

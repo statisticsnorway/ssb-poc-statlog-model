@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0.0",
+  "dapla_team": "tip-tutorials",
+  "statistics_name": "metstat",
+  "git_tag": "2025.12",
+  "git_commit_hash": "5faec80b4746112ef9df340cbaf779bff0a00a7f",
+  "data_source": [
+    "gs://ssb-tip-tutorials-data-produkt-prod/metstat/utdata/observations_p2025-12-01_p2025-12-31_v1.parquet",
+    "gs://ssb-tip-tutorials-data-produkt-prod/metstat/utdata/weather_stations_p2025-01-01_v1.parquet"
+  ],
+  "daplalab_image": "ghcr.io/statisticsnorway/daplalab-jupyter:0.18.10"
+}
