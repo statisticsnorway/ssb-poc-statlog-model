@@ -1,15 +1,23 @@
 {
-    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/quality-control-result/2.0.0",
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/quality-control-result/3.0.0",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Quality control result",
     "description": "Schema for statistics quality control result.",
     "type": "object",
+    "additionalProperties": false,
+    "not": {"properties": {"value": {"type": "null"}, "quality_control_results": {"type": "null"}}},
     "properties": {
         "schema_version": {
             "description": "Version of this schema.",
             "type": "string",
-            "const": "2.0.0"
+            "const": "3.0.0"
         },
+        "event_id": {"description": "Stable identifier of this persisted quality measurement.", "type": ["string", "null"], "minLength": 1, "default": null},
+        "segment_id": {"description": "Identifier linking this measurement to its transformation's lineage.", "type": ["string", "null"], "minLength": 1, "default": null},
+        "recorded_at": {"description": "Timezone-aware instant when this event was recorded, distinct from quality_control_datetime.", "type": ["string", "null"], "format": "date-time", "default": null},
+        "value": {"description": "Observed scalar measurement, separate from the categorical outcome. Numeric values must be finite.", "type": ["integer", "number", "string", "boolean", "null"], "default": null},
+        "unit": {"description": "Measurement unit, for example count, proportion, or percent.", "type": ["string", "null"], "default": null},
+        "producer_metadata": {"description": "Team-defined JSON-compatible production details; cannot override named fields.", "type": ["object", "null"], "additionalProperties": true, "default": null},
         "statistics_name": {
             "description": "Statistics shortname or statistics product name",
             "type": "string"
@@ -19,11 +27,11 @@
             "type": "string"
         },
         "data_location": {
-            "description": "Controlled dataset reference/filepath (eg. GCS-path to a parquet file) or other dataset reference (eg. ref. to a CloudSQL database table).",
+            "description": "Checked input GCS paths with generations or inline partition members.",
             "$comment": "Reference to one or more data sets used for the quality control.",
             "type": "array",
             "items": {
-                "type": "string"
+                "$ref": "lineage-json-schema.json#/$defs/dataset"
             }
         },
         "data_period": {
@@ -37,19 +45,14 @@
         },
         "quality_control_results": {
             "description": "Quality control result: quality ok (0), quality issues detected (1), missing value detected (2).",
-            "type": "string",
-            "enum": [
-                "0",
-                "1",
-                "2"
+            "default": null,
+            "anyOf": [
+                {"type": "string", "enum": ["0", "1", "2"]},
+                {"type": "null"}
             ]
         },
         "quality_result_comment": {
             "description": "Quality control result comment.",
-            "type": "string"
-        },
-        "quality_control_run_exception": {
-            "description": "Exception description. An error or warning occurred when executing the quality control routine.",
             "type": "string"
         }
     },
@@ -59,7 +62,6 @@
         "quality_control_id",
         "data_location",
         "data_period",
-        "quality_control_datetime",
-        "quality_control_results"
+        "quality_control_datetime"
     ]
 }

@@ -55,7 +55,7 @@ from ssb_poc_statlog_model.change_data_log import ChangeDataLog, DataChangeType
 
 change = ChangeDataLog(
     statistics_name="arblonn",
-    data_source=["gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"],
+    data_source=[{"path": "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet", "generation": "123"}],
     data_target="gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
     data_period="2023-12",
     change_event="A",
@@ -84,6 +84,89 @@ print(change.model_dump_json())
 
 Tip about timestamps in JSON: use ISO 8601 with timezone information (e.g. `…Z` for
 UTC) to satisfy Pydantic’s `AwareDatetime` requirement used in several models.
+
+## Development Model Changes
+
+The development branch uses `ssb_poc_statlog_model.lineage.Lineage` (corrected
+from the former misspelling) with lineage schema version `3.0.0`. Input/output
+entries are now objects, not strings:
+
+```python
+from datetime import UTC, datetime
+from ssb_poc_statlog_model.lineage import Lineage
+
+lineage = Lineage(
+    event_id="event-1",
+    segment_id="segment-1",
+    recorded_at=datetime.now(UTC),
+    data_source=[{"path": "gs://source-bucket/input_v1.parquet", "generation": "123"}],
+    data_target=[{"path": "gs://target-bucket/output_v1.parquet", "generation": "456"}],
+    git_commit_hash="actual-commit",
+    git_dirty=False,
+    git_repository="https://github.com/statisticsnorway/example",
+    image_name="registry/image:tag",
+    dapla_environment="PROD",
+    timezone="Europe/Oslo",
+    producer_metadata={"method": "prepare"},
+)
+```
+
+`path` must be a GCS object URI. `generation` is a decimal string or unknown
+(`None`); identity is the pair, not the generation alone. This replaces the
+old parallel input-checksum field. Existing lineage imports and payloads need
+migration; there is no alias for the misspelled class/module.
+
+Partitioned Parquet uses the dataset root and an inline, complete member list:
+
+```python
+dataset = {
+    "path": "gs://target-bucket/output_p2026_v1/",
+    "members": [
+        {"path": "year=2026/part-0.parquet", "generation": "456"},
+        {"path": "year=2026/part-1.parquet", "generation": "457"},
+    ],
+}
+```
+
+Members use unique relative paths and are sorted by path. Root generation and
+members are mutually exclusive. The logger must collect a stable, complete list;
+validation cannot prove completeness. No separate manifest model/file is needed.
+Release `data_source`, change `data_source`, and result `data_location` use the
+same reference shape. Non-GCS artifacts are outside this development scope.
+
+All main models support optional `event_id`, timezone-aware `recorded_at`, and
+`producer_metadata` (nested JSON-compatible team details). Lineage, change logs,
+and quality results also support optional `segment_id`; definitions and releases
+are not owned by a single transformation segment. No session ID or separate
+context/status record is introduced. The logger will supply IDs and timestamps;
+the models do not generate them or query environment variables themselves.
+
+Lineage carries optional Git commit/dirty state, image and Dapla environment
+fields, execution start/end times, timezone, UTC offset, and configured `TZ`.
+Release retains its required Git commit and adds optional `git_dirty`.
+Both release and lineage support `git_repository`; configuration belongs in that
+version-controlled repository. Unknown fields are rejected; custom details belong
+only in `producer_metadata`.
+No separate runtime-version fields are collected. Git provenance is not repeated on quality
+or change events. Missing dirty state is unknown, not clean.
+
+Quality results add optional scalar `value` and `unit`, separate from their
+optional categorical outcome. At least one non-null value or outcome is required;
+zero and False are valid. Execution errors raise in caller code and produce no
+result; `quality_control_run_exception` has been removed. Scalar types are preserved and numeric
+values must be finite. Optional `gsbpm_code` is available on quality definitions,
+lineage, and changes; classification 933 is implicit. The model checks code shape,
+not codelist membership, and results refer to their definition's code.
+
+Definitions require `quality_control_name`; history groups by name and recording
+timestamp. Logger registration should warn that a new name may be a rename that
+breaks history grouping. No predecessor link is required.
+
+Change/quality schemas are now `3.0.0`, release is `2.0.0`. Explicit old schema
+version literals must be migrated. These are unreleased development changes;
+the package version and published dependency constraints have not been changed.
+When writing schema-valid JSON, use `model_dump_json(exclude_none=True)` to omit
+unset legacy optional fields whose schemas do not permit explicit null values.
 
 ## Project structure
 

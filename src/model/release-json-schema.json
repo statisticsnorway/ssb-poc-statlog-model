@@ -1,15 +1,21 @@
 {
-    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/release/1.0.0",
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/release/2.0.0",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Release",
     "description": "Data model for a release in a statistical production process.",
     "type": "object",
+    "additionalProperties": false,
     "properties": {
         "schema_version": {
             "description": "Version of this schema.",
             "type": "string",
-            "const": "1.0.0"
+            "const": "2.0.0"
         },
+        "event_id": {"description": "Stable identifier of this persisted release event.", "type": ["string", "null"], "minLength": 1, "default": null},
+        "recorded_at": {"description": "Timezone-aware instant when this release event was recorded.", "type": ["string", "null"], "format": "date-time", "default": null},
+        "git_dirty": {"description": "Whether staged, unstaged, or untracked non-ignored changes existed at release. Null means unknown.", "type": ["boolean", "null"], "default": null},
+        "git_repository": {"description": "Repository name or sanitized URI containing code and version-controlled configuration.", "type": ["string", "null"], "minLength": 1, "default": null},
+        "producer_metadata": {"description": "Team-defined JSON-compatible release details; cannot override named fields.", "type": ["object", "null"], "additionalProperties": true, "default": null},
         "dapla_team": {
             "description": "Name of the dapla team that produced the release.",
             "type": "string"
@@ -27,11 +33,11 @@
             "type": "string"
         },
         "data_source": {
-            "description": "Reference or filepath to one or more datasets in the final data state (utdata or klargjorte-data) used as data source for the release.",
+            "description": "Released GCS paths with generations or inline partition members, used to discover producing lineage segments.",
             "$comment": "Dataset filepath (eg. GCS-path to a parquet file).",
             "type": "array",
             "items": {
-                "type": "string"
+                "$ref": "lineage-json-schema.json#/$defs/dataset"
             }
         },
         "daplalab_image": {
@@ -45,8 +51,6 @@
         "statistics_name",
         "git_tag",
         "git_commit_hash",
-        "data_source",
-        "daplalab_image_name",
-        "daplalab_image_tag"
+        "data_source"
     ]
 }

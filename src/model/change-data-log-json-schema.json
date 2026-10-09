@@ -1,25 +1,31 @@
 {
-    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/change-data-log/2.0.0",
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/change-data-log/3.0.0",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Change data log",
     "description": "Data model for data change log in a statistical production process.",
     "type": "object",
+    "additionalProperties": false,
     "properties": {
         "schema_version": {
             "description": "Version of this schema.",
             "type": "string",
-            "const": "2.0.0"
+            "const": "3.0.0"
         },
+        "event_id": {"description": "Stable identifier of this persisted change event.", "type": ["string", "null"], "minLength": 1, "default": null},
+        "segment_id": {"description": "Identifier linking this change to its transformation's lineage.", "type": ["string", "null"], "minLength": 1, "default": null},
+        "recorded_at": {"description": "Timezone-aware instant when this event was recorded, distinct from change_datetime.", "type": ["string", "null"], "format": "date-time", "default": null},
+        "gsbpm_code": {"description": "Optional GSBPM code from Klass classification 933.", "type": ["string", "null"], "pattern": "^[1-8](?:\\.[0-9]+)*$", "default": null},
+        "producer_metadata": {"description": "Team-defined JSON-compatible production details; cannot override named fields.", "type": ["object", "null"], "additionalProperties": true, "default": null},
         "statistics_name": {
             "description": "Statistics shortname or statistics product name",
             "type": "string"
         },
         "data_source": {
-            "description": "Reference or filepath to one or more input datasets used as data source before changing data.",
+            "description": "Input GCS paths with generations or inline partition members used before changing data.",
             "$comment": "Dataset filepath (eg. GCS-path to a parquet file).",
             "type": "array",
             "items": {
-                "type": "string"
+                "$ref": "lineage-json-schema.json#/$defs/dataset"
             }
         },
         "data_target": {

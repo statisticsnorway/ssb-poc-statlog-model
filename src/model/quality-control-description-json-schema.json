@@ -1,15 +1,21 @@
 {
-    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/quality-control-description/2.0.0",
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/quality-control-description/3.0.0",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Quality control description",
     "description": "Model for description of quality controls used in a statistical production.",
     "type": "object",
+    "additionalProperties": false,
     "properties": {
         "schema_version": {
             "description": "Version of this schema.",
             "type": "string",
-            "const": "2.0.0"
+            "const": "3.0.0"
         },
+        "quality_control_name": {"description": "Stable name used with recorded_at to discover history. Renaming starts a different named series.", "type": "string", "minLength": 1},
+        "event_id": {"description": "Stable identifier of this definition record; quality_control_id remains the definition reference.", "type": ["string", "null"], "minLength": 1, "default": null},
+        "recorded_at": {"description": "Timezone-aware instant when this reusable definition was recorded.", "type": ["string", "null"], "format": "date-time", "default": null},
+        "gsbpm_code": {"description": "Optional GSBPM code from Klass classification 933; measures refer to this definition's selection.", "type": ["string", "null"], "pattern": "^[1-8](?:\\.[0-9]+)*$", "default": null},
+        "producer_metadata": {"description": "Team-defined JSON-compatible quality-definition details; cannot override named fields.", "type": ["object", "null"], "additionalProperties": true, "default": null},
         "quality_control_id": {
             "description": "A unique quality control ID",
             "type": "string"
@@ -32,6 +38,7 @@
             "type": "array",
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "properties": {
                     "variable_description": {
                         "type": "string"
@@ -43,6 +50,7 @@
     "required": [
         "schema_version",
         "quality_control_id",
+        "quality_control_name",
         "quality_control_description",
         "quality_control_type",
         "variables"

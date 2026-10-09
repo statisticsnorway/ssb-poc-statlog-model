@@ -32,10 +32,10 @@ ssb\_poc\_statlog\_model.generate\_python module
    :show-inheritance:
    :undoc-members:
 
-ssb\_poc\_statlog\_model.linage module
+ssb\_poc\_statlog\_model.lineage module
 --------------------------------------
 
-.. automodule:: ssb_poc_statlog_model.linage
+.. automodule:: ssb_poc_statlog_model.lineage
    :members:
    :show-inheritance:
    :undoc-members:

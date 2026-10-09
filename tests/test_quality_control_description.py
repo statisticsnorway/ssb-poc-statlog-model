@@ -12,6 +12,7 @@ from ssb_poc_statlog_model.quality_control_description import (
 def _valid_payload(qc_type: QualityControlType) -> dict[str, Any]:
     return {
         "quality_control_id": "QC-001",
+        "quality_control_name": "employment-check",
         "quality_control_description": "Checks that X holds for Y",
         "quality_control_type": qc_type,
         "variables": [

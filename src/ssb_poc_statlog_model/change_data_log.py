@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from enum import StrEnum
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import AwareDatetime, ConfigDict, Field
 
@@ -122,19 +122,106 @@ class ChangeDetails1(StatlogBaseModel):
     ] = None
 
 
+class DatasetMember(StatlogBaseModel):
+    """An object belonging to a partitioned dataset, relative to its root."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    path: Annotated[
+        str,
+        Field(
+            description="Nonempty relative object path without traversal, URI scheme, or a leading slash.",
+            pattern="^[^/:?#\\\\][^:?#\\\\]*$",
+        ),
+    ]
+    generation: Annotated[
+        str,
+        Field(
+            description="Exact GCS generation of this member, as a decimal string.",
+            pattern="^[0-9]+$",
+        ),
+    ]
+
+
+class DatasetReference(StatlogBaseModel):
+    """A GCS file with a generation, or a partitioned dataset root with inline member identities."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    path: Annotated[
+        str,
+        Field(
+            description="Canonical GCS object path or partitioned Parquet root, not a mounted alias.",
+            pattern="^gs://[a-z0-9][a-z0-9._-]*[a-z0-9]/[^?#]+$",
+        ),
+    ]
+    generation: Annotated[
+        str | None,
+        Field(
+            description="GCS generation for a single file; null or omitted for partitioned roots. Unknown for a single file means incomplete provenance.",
+            pattern="^[0-9]+$",
+        ),
+    ] = None
+    members: Annotated[
+        list[DatasetMember] | None,
+        Field(
+            description="Complete inline partition member identities with relative paths. No separate manifest file.",
+            min_length=1,
+        ),
+    ] = None
+
+
 class ChangeDataLog(StatlogBaseModel):
     """Data model for data change log in a statistical production process."""
 
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     schema_version: Annotated[
-        Literal["2.0.0"], Field(description="Version of this schema.")
-    ] = "2.0.0"
+        Literal["3.0.0"], Field(description="Version of this schema.")
+    ] = "3.0.0"
+    event_id: Annotated[
+        str | None,
+        Field(
+            description="Stable identifier of this persisted change event.",
+            min_length=1,
+        ),
+    ] = None
+    segment_id: Annotated[
+        str | None,
+        Field(
+            description="Identifier linking this change to its transformation's lineage.",
+            min_length=1,
+        ),
+    ] = None
+    recorded_at: Annotated[
+        AwareDatetime | None,
+        Field(
+            description="Timezone-aware instant when this event was recorded, distinct from change_datetime."
+        ),
+    ] = None
+    gsbpm_code: Annotated[
+        str | None,
+        Field(
+            description="Optional GSBPM code from Klass classification 933.",
+            pattern="^[1-8](?:\\.[0-9]+)*$",
+        ),
+    ] = None
+    producer_metadata: Annotated[
+        dict[str, Any] | None,
+        Field(
+            description="Team-defined JSON-compatible production details; cannot override named fields."
+        ),
+    ] = None
     statistics_name: Annotated[
         str, Field(description="Statistics shortname or statistics product name")
     ]
     data_source: Annotated[
-        list[str],
+        list[DatasetReference],
         Field(
-            description="Reference or filepath to one or more input datasets used as data source before changing data."
+            description="Input GCS paths with generations or inline partition members used before changing data."
         ),
     ]
     data_target: Annotated[

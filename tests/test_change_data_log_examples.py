@@ -5,11 +5,11 @@ import pytest
 
 from ssb_poc_statlog_model.change_data_log import ChangeDataLog
 
-EXAMPLES_DIR = Path(__file__).parents[1] / "src" / "model" / "example_log_change_data"
+EXAMPLES_DIR = Path(__file__).parents[1] / "src" / "model" / "example_logs"
 
 
 def _iter_example_files() -> list[Path]:
-    return sorted(EXAMPLES_DIR.glob("*.json"))
+    return sorted(path for path in EXAMPLES_DIR.glob("*.json") if "data" in path.stem)
 
 
 @pytest.mark.parametrize("file", _iter_example_files(), ids=lambda p: p.name)

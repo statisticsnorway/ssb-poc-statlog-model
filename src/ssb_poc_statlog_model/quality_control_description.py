@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 from enum import StrEnum
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
-from pydantic import Field
+from pydantic import AwareDatetime, ConfigDict, Field
 
 from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 
@@ -20,15 +20,54 @@ class QualityControlType(StrEnum):
 
 
 class Variable(StatlogBaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     variable_description: str | None = None
 
 
 class QualityControlDescription(StatlogBaseModel):
     """Model for description of quality controls used in a statistical production."""
 
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     schema_version: Annotated[
-        Literal["2.0.0"], Field(description="Version of this schema.")
-    ] = "2.0.0"
+        Literal["3.0.0"], Field(description="Version of this schema.")
+    ] = "3.0.0"
+    quality_control_name: Annotated[
+        str,
+        Field(
+            description="Stable name used with recorded_at to discover history. Renaming starts a different named series.",
+            min_length=1,
+        ),
+    ]
+    event_id: Annotated[
+        str | None,
+        Field(
+            description="Stable identifier of this definition record; quality_control_id remains the definition reference.",
+            min_length=1,
+        ),
+    ] = None
+    recorded_at: Annotated[
+        AwareDatetime | None,
+        Field(
+            description="Timezone-aware instant when this reusable definition was recorded."
+        ),
+    ] = None
+    gsbpm_code: Annotated[
+        str | None,
+        Field(
+            description="Optional GSBPM code from Klass classification 933; measures refer to this definition's selection.",
+            pattern="^[1-8](?:\\.[0-9]+)*$",
+        ),
+    ] = None
+    producer_metadata: Annotated[
+        dict[str, Any] | None,
+        Field(
+            description="Team-defined JSON-compatible quality-definition details; cannot override named fields."
+        ),
+    ] = None
     quality_control_id: Annotated[str, Field(description="A unique quality control ID")]
     quality_control_description: Annotated[
         str, Field(description="Quality control description")

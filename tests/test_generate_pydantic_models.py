@@ -26,7 +26,7 @@ PROJECT_ROOT = Path(__file__).parents[1]
         ("change-data-log-json-schema.json", "change_data_log.py"),
         ("quality-control-result-json-schema.json", "quality_control_result.py"),
         ("release-json-schema.json", "release.py"),
-        ("linage-json-schema.json", "linage.py"),
+        ("lineage-json-schema.json", "lineage.py"),
         ("my-model-schema.json", "my_model.py"),
         ("any-name.json", "any_name.py"),
     ],

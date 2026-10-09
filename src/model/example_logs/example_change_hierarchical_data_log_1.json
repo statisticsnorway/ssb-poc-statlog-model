@@ -1,25 +1,38 @@
 {
-    "schema_version": "2.0.0",
-    "statistics_name": "familie",
-    "data_source": ["gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2020-12_v1.parquet"],
-    "data_target": "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2020-12_v1.parquet",
-    "data_period": "2020-12-31",
-    "change_event": "M",
-    "change_event_reason": "REVIEW",
-    "change_datetime": "2021-01-10T15:00:00.000Z",
-    "changed_by": "zzz@ssb.no",
-    "data_change_type": "UPD",
-    "change_comment": "Oppdatert gateadresse i hierarkisk XML-datafil pga. data-vasking ...",
-    "change_details": {
-        "detail_type": "unit",
-        "unit_id": [
-            {"unit_id_variable": "xml-path", "unit_id_value": "familienr['010170nnnnn'].person.fnr['010199nnnnn']"}
-        ],
-        "old_value": [
-            {"variable_name": "adresse.gateadresse", "value": "Gamle-veien 1"}
-        ],
-        "new_value": [
-            {"variable_name": "adresse.gateadresse", "value": "Ny-veien 2"}
-        ]
-    }
+    "schema_version":  "3.0.0",
+    "statistics_name":  "familie",
+    "data_source":  [
+                        {
+                            "path":  "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2020-12_v1.parquet"
+                        }
+                    ],
+    "data_target":  "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2020-12_v1.parquet",
+    "data_period":  "2020-12-31",
+    "change_event":  "M",
+    "change_event_reason":  "REVIEW",
+    "change_datetime":  "2021-01-10T15:00:00.000Z",
+    "changed_by":  "zzz@ssb.no",
+    "data_change_type":  "UPD",
+    "change_comment":  "Oppdatert gateadresse i hierarkisk XML-datafil pga. data-vasking ...",
+    "change_details":  {
+                           "detail_type":  "unit",
+                           "unit_id":  [
+                                           {
+                                               "unit_id_variable":  "xml-path",
+                                               "unit_id_value":  "familienr[\u0027010170nnnnn\u0027].person.fnr[\u0027010199nnnnn\u0027]"
+                                           }
+                                       ],
+                           "old_value":  [
+                                             {
+                                                 "variable_name":  "adresse.gateadresse",
+                                                 "value":  "Gamle-veien 1"
+                                             }
+                                         ],
+                           "new_value":  [
+                                             {
+                                                 "variable_name":  "adresse.gateadresse",
+                                                 "value":  "Ny-veien 2"
+                                             }
+                                         ]
+                       }
 }

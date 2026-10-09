@@ -17,7 +17,7 @@ def make_common_fields() -> dict[str, Any]:
     return {
         "statistics_name": "arblonn",
         "data_source": [
-            "gs://bucket/path/input.parquet",
+            {"path": "gs://bucket/path/input.parquet", "generation": "123"},
         ],
         "data_target": "gs://bucket/path/target.parquet",
         "data_period": "2023-12",

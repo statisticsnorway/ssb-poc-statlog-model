@@ -1,27 +1,38 @@
 {
-    "schema_version": "2.0.0",
-    "statistics_name": "arblonn",
-    "data_source": [
-        "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"
-    ],
-    "data_target": "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
-    "data_period": "2023-12",
-    "change_event": "M",
-    "change_event_reason": "REVIEW",
-    "change_datetime": "2024-01-10T15:00:00.000Z",
-    "changed_by": "zzz@ssb.no",
-    "data_change_type": "UPD",
-    "change_comment": "Endret avtalt lønn pga. ditt og datt ...",
-    "change_details": {
-        "detail_type": "unit",
-        "unit_id": [
-            {"unit_id_variable": "fnr", "unit_id_value": "170598nnnnn"}
-        ],
-        "old_value": [
-            {"variable_name": "loenn", "value": "43000"}
-        ],
-        "new_value": [
-            {"variable_name": "loenn", "value": "45000"}
-        ]
-    }
+    "schema_version":  "3.0.0",
+    "statistics_name":  "arblonn",
+    "data_source":  [
+                        {
+                            "path":  "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"
+                        }
+                    ],
+    "data_target":  "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
+    "data_period":  "2023-12",
+    "change_event":  "M",
+    "change_event_reason":  "REVIEW",
+    "change_datetime":  "2024-01-10T15:00:00.000Z",
+    "changed_by":  "zzz@ssb.no",
+    "data_change_type":  "UPD",
+    "change_comment":  "Endret avtalt lønn pga. ditt og datt ...",
+    "change_details":  {
+                           "detail_type":  "unit",
+                           "unit_id":  [
+                                           {
+                                               "unit_id_variable":  "fnr",
+                                               "unit_id_value":  "170598nnnnn"
+                                           }
+                                       ],
+                           "old_value":  [
+                                             {
+                                                 "variable_name":  "loenn",
+                                                 "value":  "43000"
+                                             }
+                                         ],
+                           "new_value":  [
+                                             {
+                                                 "variable_name":  "loenn",
+                                                 "value":  "45000"
+                                             }
+                                         ]
+                       }
 }

@@ -1,0 +1,22 @@
+{
+  "schema_version": "3.0.0",
+  "data_source": [],
+  "data_target": [
+    {
+      "path": "gs://example-bucket/metstat/klargjorte-data/dataset_p2025_p2026_v1/",
+      "members": [
+        {
+          "path": "aar=2025/part-0.parquet",
+          "generation": "123"
+        },
+        {
+          "path": "aar=2026/part-0.parquet",
+          "generation": "456"
+        }
+      ]
+    }
+  ],
+  "event_id": "example-partitioned-lineage-1",
+  "segment_id": "example-partitioned-segment-1",
+  "recorded_at": "2026-10-07T00:00:00Z"
+}

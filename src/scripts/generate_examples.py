@@ -5,15 +5,21 @@ from ssb_poc_statlog_model.change_data_log import (
     ChangeDataLog,
     DataChangeType,
 )
-from ssb_poc_statlog_model.linage import Linage
+from ssb_poc_statlog_model.lineage import Lineage
 from ssb_poc_statlog_model.release import Release
 
 OUTPUT_DIR = Path(__file__).parent.parent.parent / "src" / "model" / "example_logs"
 
 change = ChangeDataLog(
+    event_id="example-change-1",
+    segment_id="example-segment-1",
+    recorded_at=datetime(2024, 1, 10, 15, 0, tzinfo=UTC),
     statistics_name="arblonn",
     data_source=[
-        "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"
+        {
+            "path": "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet",
+            "generation": "1760000000000001",
+        }
     ],
     data_target="gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
     data_period="2023-12",
@@ -39,31 +45,73 @@ change = ChangeDataLog(
 )
 print(change.model_dump_json())
 change_file = OUTPUT_DIR / "example_change_data_log.json"
-change_file.write_text(change.model_dump_json(indent=2))
+change_file.write_text(change.model_dump_json(indent=2, exclude_none=True))
 
 release = Release(
+    event_id="example-release-1",
+    recorded_at=datetime(2024, 1, 10, 15, 0, tzinfo=UTC),
+    git_dirty=False,
+    git_repository="https://github.com/statisticsnorway/example-production",
     dapla_team="tip-tutorials",
     statistics_name="metstat",
     git_tag="2025.12",
     git_commit_hash="5faec80b4746112ef9df340cbaf779bff0a00a7f",
     data_source=[
-        "gs://ssb-tip-tutorials-data-produkt-prod/metstat/utdata/observations_p2025-12-01_p2025-12-31_v1.parquet",
-        "gs://ssb-tip-tutorials-data-produkt-prod/metstat/utdata/weather_stations_p2025-01-01_v1.parquet",
+        {
+            "path": "gs://ssb-tip-tutorials-data-produkt-prod/metstat/utdata/observations_p2025-12-01_p2025-12-31_v1.parquet",
+            "generation": "1760000000000003",
+        },
+        {
+            "path": "gs://ssb-tip-tutorials-data-produkt-prod/metstat/utdata/weather_stations_p2025-01-01_v1.parquet",
+            "generation": "1760000000000004",
+        },
     ],
     daplalab_image="ghcr.io/statisticsnorway/daplalab-jupyter:0.18.10",
 )
 print(release.model_dump_json())
 release_file = OUTPUT_DIR / "example_release_log.json"
-release_file.write_text(release.model_dump_json(indent=2))
+release_file.write_text(release.model_dump_json(indent=2, exclude_none=True))
 
-linage = Linage(
+lineage = Lineage(
+    event_id="example-lineage-1",
+    segment_id="example-segment-1",
+    recorded_at=datetime(2024, 1, 10, 15, 0, tzinfo=UTC),
+    image_name="registry.example/jupyter:example",
+    git_repository="https://github.com/statisticsnorway/example-production",
+    dapla_environment="PROD",
+    timezone="Europe/Oslo",
     data_source=[
-        "gs://ssb-tip-tutorials-data-produkt-prod/metstat/inndata/observations_p2025-12-01_p2025-12-31_v1.parquet",
+        {
+            "path": "gs://ssb-tip-tutorials-data-produkt-prod/metstat/inndata/observations_p2025-12-01_p2025-12-31_v1.parquet",
+            "generation": "1760000000000001",
+        },
     ],
     data_target=[
-        "gs://ssb-tip-tutorials-data-produkt-prod/metstat/klargjorte-data/observations_p2025-12-01_p2025-12-31_v1.parquet",
+        {
+            "path": "gs://ssb-tip-tutorials-data-produkt-prod/metstat/klargjorte-data/observations_p2025-12-01_p2025-12-31_v1.parquet",
+            "generation": "1760000000000002",
+        },
     ],
 )
-print(linage.model_dump_json())
-linage_file = OUTPUT_DIR / "example_linage_log.json"
-linage_file.write_text(linage.model_dump_json(indent=2))
+print(lineage.model_dump_json())
+lineage_file = OUTPUT_DIR / "example_lineage_log.json"
+lineage_file.write_text(lineage.model_dump_json(indent=2, exclude_none=True))
+
+partitioned = Lineage(
+    event_id="example-partitioned-lineage-1",
+    segment_id="example-partitioned-segment-1",
+    recorded_at=datetime(2026, 10, 7, tzinfo=UTC),
+    data_source=[],
+    data_target=[
+        {
+            "path": "gs://example-bucket/metstat/klargjorte-data/dataset_p2025_p2026_v1/",
+            "members": [
+                {"path": "aar=2025/part-0.parquet", "generation": "123"},
+                {"path": "aar=2026/part-0.parquet", "generation": "456"},
+            ],
+        }
+    ],
+)
+(OUTPUT_DIR / "example_partitioned_lineage_log.json").write_text(
+    partitioned.model_dump_json(indent=2, exclude_none=True)
+)

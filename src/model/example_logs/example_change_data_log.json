@@ -1,8 +1,14 @@
 {
-  "schema_version": "2.0.0",
+  "schema_version": "3.0.0",
+  "event_id": "example-change-1",
+  "segment_id": "example-segment-1",
+  "recorded_at": "2024-01-10T15:00:00Z",
   "statistics_name": "arblonn",
   "data_source": [
-    "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"
+    {
+      "path": "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet",
+      "generation": "1760000000000001"
+    }
   ],
   "data_target": "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
   "data_period": "2023-12",
@@ -24,7 +30,6 @@
         "unit_id_value": "123456789"
       }
     ],
-    "old_value": null,
     "new_value": [
       {
         "variable_name": "bostedskommune",

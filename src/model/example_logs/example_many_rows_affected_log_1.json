@@ -1,21 +1,25 @@
 {
-    "schema_version": "2.0.0",
-    "statistics_name": "arblonn",
-    "data_source": [
-        "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-11_v1.parquet",
-        "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"
-    ],
-    "data_target": "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
-    "data_period": "2023-12",
-    "change_event": "A",
-    "change_event_reason": "OTHER",
-    "change_datetime": "2024-01-10T15:00:00.000Z",
-    "changed_by": "arblonn_automagisk_metode.py",
-    "data_change_type": "UPD",
-    "change_comment": "Kommafeil i lønn-variabelen automatisk rettet for mange rader (enheter) i datasettet.",
-    "change_details": {
-        "detail_type": "rows",
-        "rows_affected": 208496,
-        "variable_name": "loenn"
-    }
+    "schema_version":  "3.0.0",
+    "statistics_name":  "arblonn",
+    "data_source":  [
+                        {
+                            "path":  "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-11_v1.parquet"
+                        },
+                        {
+                            "path":  "gs://ssb-prod-superteam-data-produkt/arblonn/inndata/arbeidloenn_p2023-12_v1.parquet"
+                        }
+                    ],
+    "data_target":  "gs://ssb-prod-superteam-data-produkt/arblonn/klargjorte-data/arbeidloenn_p2023-12_v1.parquet",
+    "data_period":  "2023-12",
+    "change_event":  "A",
+    "change_event_reason":  "OTHER",
+    "change_datetime":  "2024-01-10T15:00:00.000Z",
+    "changed_by":  "arblonn_automagisk_metode.py",
+    "data_change_type":  "UPD",
+    "change_comment":  "Kommafeil i lønn-variabelen automatisk rettet for mange rader (enheter) i datasettet.",
+    "change_details":  {
+                           "detail_type":  "rows",
+                           "rows_affected":  208496,
+                           "variable_name":  "loenn"
+                       }
 }

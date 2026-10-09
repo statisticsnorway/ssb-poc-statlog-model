@@ -1,0 +1,98 @@
+{
+    "$id": "https://ssb.no/schemas/ssb-poc-statlog-model/lineage/3.0.0",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Lineage",
+    "description": "Data model for data lineage in a statistical production process.",
+    "type": "object",
+    "additionalProperties": false,
+    "$defs": {
+        "dataset": {
+            "title": "DatasetReference",
+            "description": "A GCS file with a generation, or a partitioned dataset root with inline member identities.",
+            "type": "object",
+            "not": {"required": ["generation", "members"], "properties": {"generation": {"type": "string"}, "members": {"type": "array"}}},
+            "properties": {
+                "path": {
+                    "description": "Canonical GCS object path or partitioned Parquet root, not a mounted alias.",
+                    "type": "string",
+                    "pattern": "^gs://[a-z0-9][a-z0-9._-]*[a-z0-9]/[^?#]+$"
+                },
+                "generation": {
+                    "description": "GCS generation for a single file; null or omitted for partitioned roots. Unknown for a single file means incomplete provenance.",
+                    "type": ["string", "null"],
+                    "pattern": "^[0-9]+$",
+                    "default": null
+                },
+                "members": {
+                    "description": "Complete inline partition member identities with relative paths. No separate manifest file.",
+                    "type": ["array", "null"], "default": null, "minItems": 1, "uniqueItems": true,
+                    "items": {"$ref": "#/$defs/member"}
+                }
+            },
+            "required": ["path"],
+            "additionalProperties": false
+        },
+        "member": {
+            "title": "DatasetMember",
+            "description": "An object belonging to a partitioned dataset, relative to its root.",
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string", "pattern": "^[^/:?#\\\\][^:?#\\\\]*$",
+                    "not": {"pattern": "(^|/)\\.\\.?(/|$)"},
+                    "description": "Nonempty relative object path without traversal, URI scheme, or a leading slash."
+                },
+                "generation": {"type": "string", "pattern": "^[0-9]+$", "description": "Exact GCS generation of this member, as a decimal string."}
+            },
+            "required": ["path", "generation"], "additionalProperties": false
+        }
+    },
+    "properties": {
+        "schema_version": {
+            "description": "Version of this schema.",
+            "type": "string",
+            "const": "3.0.0"
+        },
+        "data_source": {
+            "description": "Input GCS datasets and the generations consumed by the transformation.",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/dataset"
+            }
+        },
+        "data_target": {
+            "description": "Successfully saved output GCS datasets and their finalized generations.",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/dataset"
+            }
+        },
+        "step": {
+            "description": "A string describing at which step in the process the log is for.",
+            "type": "string"
+        },
+        "event_id": {"description": "Stable identifier of this persisted lineage event.", "type": ["string", "null"], "minLength": 1, "default": null},
+        "segment_id": {"description": "Identifier shared with quality and change events for this transformation.", "type": ["string", "null"], "minLength": 1, "default": null},
+        "recorded_at": {"description": "Timezone-aware instant when this event was recorded, distinct from execution time.", "type": ["string", "null"], "format": "date-time", "default": null},
+        "git_commit_hash": {"description": "Git commit of the code used for this transformation.", "type": ["string", "null"], "default": null},
+        "git_repository": {"description": "Repository name or sanitized URI containing the executed code and its configuration.", "type": ["string", "null"], "minLength": 1, "default": null},
+        "git_dirty": {"description": "Whether staged, unstaged, or untracked non-ignored changes existed. Null means unknown.", "type": ["boolean", "null"], "default": null},
+        "image_name": {"description": "Complete container image reference from IMAGE_NAME, including its tag.", "type": ["string", "null"], "default": null},
+        "dapla_environment": {"description": "Platform environment from DAPLA_ENVIRONMENT, not dataset publication status.", "type": ["string", "null"], "default": null},
+        "dapla_region": {"description": "Platform context from DAPLA_REGION; DAPLA_LAB is not a geographic region.", "type": ["string", "null"], "default": null},
+        "dapla_service": {"description": "Execution service from DAPLA_SERVICE.", "type": ["string", "null"], "default": null},
+        "dapla_team_google_project_id": {"description": "Google project context from DAPLA_TEAM_GOOGLE_PROJECT_ID.", "type": ["string", "null"], "default": null},
+        "execution_started_at": {"description": "Timezone-aware execution start instant, preferably expressed in UTC.", "type": ["string", "null"], "format": "date-time", "default": null},
+        "execution_finished_at": {"description": "Timezone-aware execution finish instant, preferably expressed in UTC.", "type": ["string", "null"], "format": "date-time", "default": null},
+        "timezone": {"description": "Effective process timezone, preferably an IANA name. Null means unknown.", "type": ["string", "null"], "default": null},
+        "utc_offset_seconds": {"description": "Effective UTC offset in seconds at execution start; does not replace timezone rules.", "type": ["integer", "null"], "exclusiveMinimum": -86400, "exclusiveMaximum": 86400, "default": null},
+        "configured_tz": {"description": "Configured TZ environment variable, not proof of the effective process timezone.", "type": ["string", "null"], "default": null},
+        "gsbpm_code": {"description": "Optional GSBPM code from Klass classification 933; membership is checked by the logger.", "type": ["string", "null"], "pattern": "^[1-8](?:\\.[0-9]+)*$", "default": null},
+        "producer_metadata": {"description": "Team-defined JSON-compatible production details; cannot override named fields.", "type": ["object", "null"], "additionalProperties": true, "default": null}
+    },
+    "required": [
+        "schema_version",
+        "data_source",
+        "data_target"
+    ]
+}

@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 from enum import StrEnum
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
-from pydantic import AwareDatetime, Field
+from pydantic import AwareDatetime, ConfigDict, Field
 
 from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
 
@@ -19,12 +19,104 @@ class QualityControlResults(StrEnum):
     field_2 = "2"
 
 
+class DatasetMember(StatlogBaseModel):
+    """An object belonging to a partitioned dataset, relative to its root."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    path: Annotated[
+        str,
+        Field(
+            description="Nonempty relative object path without traversal, URI scheme, or a leading slash.",
+            pattern="^[^/:?#\\\\][^:?#\\\\]*$",
+        ),
+    ]
+    generation: Annotated[
+        str,
+        Field(
+            description="Exact GCS generation of this member, as a decimal string.",
+            pattern="^[0-9]+$",
+        ),
+    ]
+
+
+class DatasetReference(StatlogBaseModel):
+    """A GCS file with a generation, or a partitioned dataset root with inline member identities."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    path: Annotated[
+        str,
+        Field(
+            description="Canonical GCS object path or partitioned Parquet root, not a mounted alias.",
+            pattern="^gs://[a-z0-9][a-z0-9._-]*[a-z0-9]/[^?#]+$",
+        ),
+    ]
+    generation: Annotated[
+        str | None,
+        Field(
+            description="GCS generation for a single file; null or omitted for partitioned roots. Unknown for a single file means incomplete provenance.",
+            pattern="^[0-9]+$",
+        ),
+    ] = None
+    members: Annotated[
+        list[DatasetMember] | None,
+        Field(
+            description="Complete inline partition member identities with relative paths. No separate manifest file.",
+            min_length=1,
+        ),
+    ] = None
+
+
 class QualityControlResult(StatlogBaseModel):
     """Schema for statistics quality control result."""
 
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     schema_version: Annotated[
-        Literal["2.0.0"], Field(description="Version of this schema.")
-    ] = "2.0.0"
+        Literal["3.0.0"], Field(description="Version of this schema.")
+    ] = "3.0.0"
+    event_id: Annotated[
+        str | None,
+        Field(
+            description="Stable identifier of this persisted quality measurement.",
+            min_length=1,
+        ),
+    ] = None
+    segment_id: Annotated[
+        str | None,
+        Field(
+            description="Identifier linking this measurement to its transformation's lineage.",
+            min_length=1,
+        ),
+    ] = None
+    recorded_at: Annotated[
+        AwareDatetime | None,
+        Field(
+            description="Timezone-aware instant when this event was recorded, distinct from quality_control_datetime."
+        ),
+    ] = None
+    value: Annotated[
+        int | float | str | bool | None,
+        Field(
+            description="Observed scalar measurement, separate from the categorical outcome. Numeric values must be finite."
+        ),
+    ] = None
+    unit: Annotated[
+        str | None,
+        Field(
+            description="Measurement unit, for example count, proportion, or percent."
+        ),
+    ] = None
+    producer_metadata: Annotated[
+        dict[str, Any] | None,
+        Field(
+            description="Team-defined JSON-compatible production details; cannot override named fields."
+        ),
+    ] = None
     statistics_name: Annotated[
         str, Field(description="Statistics shortname or statistics product name")
     ]
@@ -35,9 +127,9 @@ class QualityControlResult(StatlogBaseModel):
         ),
     ]
     data_location: Annotated[
-        list[str],
+        list[DatasetReference],
         Field(
-            description="Controlled dataset reference/filepath (eg. GCS-path to a parquet file) or other dataset reference (eg. ref. to a CloudSQL database table)."
+            description="Checked input GCS paths with generations or inline partition members."
         ),
     ]
     data_period: Annotated[
@@ -49,17 +141,11 @@ class QualityControlResult(StatlogBaseModel):
         Field(description="Quality control datetime (date and time, ISO 8601)"),
     ]
     quality_control_results: Annotated[
-        QualityControlResults,
+        QualityControlResults | None,
         Field(
             description="Quality control result: quality ok (0), quality issues detected (1), missing value detected (2)."
         ),
-    ]
+    ] = None
     quality_result_comment: Annotated[
         str | None, Field(description="Quality control result comment.")
-    ] = None
-    quality_control_run_exception: Annotated[
-        str | None,
-        Field(
-            description="Exception description. An error or warning occurred when executing the quality control routine."
-        ),
     ] = None

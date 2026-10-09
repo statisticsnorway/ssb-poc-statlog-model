@@ -3,19 +3,105 @@
 
 from __future__ import annotations
 
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
-from pydantic import Field
+from pydantic import AwareDatetime, ConfigDict, Field
 
 from ssb_poc_statlog_model.statlog_base_model import StatlogBaseModel
+
+
+class DatasetMember(StatlogBaseModel):
+    """An object belonging to a partitioned dataset, relative to its root."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    path: Annotated[
+        str,
+        Field(
+            description="Nonempty relative object path without traversal, URI scheme, or a leading slash.",
+            pattern="^[^/:?#\\\\][^:?#\\\\]*$",
+        ),
+    ]
+    generation: Annotated[
+        str,
+        Field(
+            description="Exact GCS generation of this member, as a decimal string.",
+            pattern="^[0-9]+$",
+        ),
+    ]
+
+
+class DatasetReference(StatlogBaseModel):
+    """A GCS file with a generation, or a partitioned dataset root with inline member identities."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    path: Annotated[
+        str,
+        Field(
+            description="Canonical GCS object path or partitioned Parquet root, not a mounted alias.",
+            pattern="^gs://[a-z0-9][a-z0-9._-]*[a-z0-9]/[^?#]+$",
+        ),
+    ]
+    generation: Annotated[
+        str | None,
+        Field(
+            description="GCS generation for a single file; null or omitted for partitioned roots. Unknown for a single file means incomplete provenance.",
+            pattern="^[0-9]+$",
+        ),
+    ] = None
+    members: Annotated[
+        list[DatasetMember] | None,
+        Field(
+            description="Complete inline partition member identities with relative paths. No separate manifest file.",
+            min_length=1,
+        ),
+    ] = None
 
 
 class Release(StatlogBaseModel):
     """Data model for a release in a statistical production process."""
 
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     schema_version: Annotated[
-        Literal["1.0.0"], Field(description="Version of this schema.")
-    ] = "1.0.0"
+        Literal["2.0.0"], Field(description="Version of this schema.")
+    ] = "2.0.0"
+    event_id: Annotated[
+        str | None,
+        Field(
+            description="Stable identifier of this persisted release event.",
+            min_length=1,
+        ),
+    ] = None
+    recorded_at: Annotated[
+        AwareDatetime | None,
+        Field(
+            description="Timezone-aware instant when this release event was recorded."
+        ),
+    ] = None
+    git_dirty: Annotated[
+        bool | None,
+        Field(
+            description="Whether staged, unstaged, or untracked non-ignored changes existed at release. Null means unknown."
+        ),
+    ] = None
+    git_repository: Annotated[
+        str | None,
+        Field(
+            description="Repository name or sanitized URI containing code and version-controlled configuration.",
+            min_length=1,
+        ),
+    ] = None
+    producer_metadata: Annotated[
+        dict[str, Any] | None,
+        Field(
+            description="Team-defined JSON-compatible release details; cannot override named fields."
+        ),
+    ] = None
     dapla_team: Annotated[
         str, Field(description="Name of the dapla team that produced the release.")
     ]
@@ -27,9 +113,9 @@ class Release(StatlogBaseModel):
         str, Field(description="Git commit hash for the release.")
     ]
     data_source: Annotated[
-        list[str],
+        list[DatasetReference],
         Field(
-            description="Reference or filepath to one or more datasets in the final data state (utdata or klargjorte-data) used as data source for the release."
+            description="Released GCS paths with generations or inline partition members, used to discover producing lineage segments."
         ),
     ]
     daplalab_image: Annotated[

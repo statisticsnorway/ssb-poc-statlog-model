@@ -15,7 +15,7 @@ def _valid_payload(result_value: QualityControlResults) -> dict[str, Any]:
         "statistics_name": "arblonn",
         "quality_control_id": "QC-001",
         "data_location": [
-            "gs://bucket/path/input.parquet",
+            {"path": "gs://bucket/path/input.parquet", "generation": "123"},
         ],
         "data_period": "2023-12",
         "quality_control_datetime": datetime(2024, 1, 10, 15, 0, 0, tzinfo=UTC),
@@ -41,7 +41,8 @@ def test_quality_control_result_valid_for_all_results(
     assert model.statistics_name == "arblonn"
     assert model.quality_control_results == result_value
     assert isinstance(model.data_location, list)
-    assert model.data_location[0].endswith("input.parquet")
+    assert model.data_location[0].path.endswith("input.parquet")
+    assert model.data_location[0].generation == "123"
 
 
 def test_quality_control_result_naive_datetime_rejected() -> None:
